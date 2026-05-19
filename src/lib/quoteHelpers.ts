@@ -36,23 +36,21 @@ export const dexterityOptions = ['Right', 'Left'] as const
 export const lengthOptions = ['Standard', 'Long'] as const
 export const shaftMaterialOptions = ['Steel', 'Graphite'] as const
 
+const MARGIN = 0.55
+const CONDITION_MULTIPLIERS: Record<ConditionTier, number> = {
+  new: 1.03,
+  excellent: 1.0,
+  good: 0.90,
+  fair: 0.75,
+}
+
 export function getConditionPrice(club: Club, condition: ConditionTier) {
-  switch (condition) {
-    case 'new':
-      return club.price_new
-    case 'excellent':
-      return club.price_excellent
-    case 'good':
-      return club.price_good
-    case 'fair':
-      return club.price_fair
-  }
+  return Math.round(club.price_avg * MARGIN * CONDITION_MULTIPLIERS[condition] * 100) / 100
 }
 
 export function availableConditions(club: Club): ConditionTier[] {
-  return ['new', 'excellent', 'good', 'fair'].filter((condition) => {
-    return getConditionPrice(club, condition as ConditionTier) > 0
-  }) as ConditionTier[]
+  if (!club.price_avg || club.price_avg <= 0) return []
+  return ['new', 'excellent', 'good', 'fair'] as ConditionTier[]
 }
 
 export function getClubFields(type: ClubType) {
