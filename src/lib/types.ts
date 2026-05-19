@@ -15,10 +15,7 @@ export interface Club {
   brand: string
   model: string
   club_type: ClubType
-  price_new: number
-  price_excellent: number
-  price_good: number
-  price_fair: number
+  price_avg: number
   created_at: string | null
   updated_at: string | null
 }
