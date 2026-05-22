@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 import HomePage from './pages/HomePage'
@@ -6,68 +6,73 @@ import QuotePage from './pages/QuotePage'
 import OrderConfirmationPage from './pages/OrderConfirmationPage'
 import AdminPage from './pages/AdminPage'
 import LoginPage from './pages/LoginPage'
+import AccountPage from './pages/AccountPage'
+import BlogPage from './pages/BlogPage'
+import PriceMatchPage from './pages/PriceMatchPage'
 import NotFoundPage from './pages/NotFoundPage'
 import ProtectedRoute from './components/ProtectedRoute'
+import Navbar from './components/Navbar'
+import { BasketProvider } from './context/BasketContext'
 
 const queryClient = new QueryClient()
 
-const navigation = [
-  { label: 'Home', path: '/' },
-  { label: 'Quote tool', path: '/quote' },
-  { label: 'Admin', path: '/admin' },
-]
+// navigation handled in Navbar component
 
 function App() {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <div className="min-h-screen bg-white text-[#1A1A1A]">
-          <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur-xl">
-            <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-4 sm:px-6">
-              <div>
-                <p className="text-lg font-semibold text-[#00243D]">Sell Your Clubs</p>
-                <span className="text-sm text-[#00537E]">Used golf club buyers</span>
-              </div>
-              <nav className="flex flex-wrap items-center gap-3">
-                {navigation.map((item) => (
-                  <NavLink
-                    key={item.path}
-                    to={item.path}
-                    end={item.path === '/'}
-                    className={({ isActive }) =>
-                      `rounded-full px-4 py-3 text-sm font-semibold transition ${isActive ? 'bg-[#00537E] text-white' : 'text-[#00243D] hover:bg-slate-100'}`
-                    }
-                  >
-                    {item.label}
-                  </NavLink>
-                ))}
-                <NavLink
-                  to="/login"
-                  className="rounded-full border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-[#00243D] transition hover:bg-slate-100"
-                >
-                  Login
-                </NavLink>
-              </nav>
-            </div>
-          </header>
-          <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-            <Routes>
+        <BasketProvider>
+          <div className="min-h-screen flex flex-col bg-white text-[#1A1A1A]">
+            <Navbar />
+            <main className="flex-1 w-full px-4 py-10 sm:px-6">
+              <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/quote" element={<QuotePage />} />
               <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
+              <Route path="/account" element={<AccountPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/price-match" element={<PriceMatchPage />} />
               <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
-          </main>
+            </main>
 
-          <footer className="border-t border-slate-200 bg-[#F4F4F4] py-6">
-            <div className="mx-auto max-w-7xl px-4 text-sm text-[#1A1A1A]/70 sm:px-6">
-              <p>Sell Your Clubs — Free postage label, trusted PayPal payout, and easy club selling.</p>
-            </div>
-          </footer>
-        </div>
-        <Toaster position="top-right" richColors />
+            <footer className="mt-auto w-full border-t border-slate-200 bg-[#F4F4F4] text-[#1A1A1A]">
+              <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:grid-cols-3 sm:px-6">
+                <div>
+                  <p className="font-semibold text-[#00243D]">About</p>
+                  <ul className="mt-4 space-y-2 text-sm text-[#1A1A1A]/80">
+                    <li>About Us</li>
+                    <li>How It Works</li>
+                    <li>Price Match Guarantee</li>
+                  </ul>
+                </div>
+                <div>
+                  <p className="font-semibold text-[#00243D]">Sell</p>
+                  <ul className="mt-4 space-y-2 text-sm text-[#1A1A1A]/80">
+                    <li>Get a Quote</li>
+                    <li>Guides</li>
+                    <li>What We Buy</li>
+                  </ul>
+                </div>
+                <div>
+                  <p className="font-semibold text-[#00243D]">Support</p>
+                  <ul className="mt-4 space-y-2 text-sm text-[#1A1A1A]/80">
+                    <li>FAQ</li>
+                    <li>Contact Us</li>
+                    <li>Terms & Conditions</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="border-t border-slate-200 px-4 py-4 text-center text-sm text-[#1A1A1A]/70 sm:px-6">
+                © Copyright sellyourclubs.co.uk 2026
+              </div>
+            </footer>
+          </div>
+          <Toaster position="top-right" richColors />
+        </BasketProvider>
       </QueryClientProvider>
     </BrowserRouter>
   )

@@ -10,10 +10,7 @@ const emptyClub = {
   brand: '',
   model: '',
   club_type: 'driver' as const,
-  price_new: 0,
-  price_excellent: 0,
-  price_good: 0,
-  price_fair: 0,
+  price_avg: 0,
 }
 
 export default function AdminPage() {
@@ -56,7 +53,7 @@ export default function AdminPage() {
     return orders.filter((order) => {
       const query = search.toLowerCase().trim()
       if (!query) return true
-      return [order.full_name, order.email, order.phone, order.collection_address, order.paypal_email]
+      return [order.full_name, order.email, order.phone, order.paypal_email]
         .join(' ')
         .toLowerCase()
         .includes(query)
@@ -74,10 +71,7 @@ export default function AdminPage() {
       brand: formClub.brand,
       model: formClub.model,
       club_type: formClub.club_type,
-      price_new: Number(formClub.price_new ?? 0),
-      price_excellent: Number(formClub.price_excellent ?? 0),
-      price_good: Number(formClub.price_good ?? 0),
-      price_fair: Number(formClub.price_fair ?? 0),
+      price_avg: Number(formClub.price_avg ?? 0),
     }
 
     try {
@@ -188,7 +182,7 @@ export default function AdminPage() {
               <div className="rounded-[28px] border border-slate-200 bg-[#F4F4F4] p-6">
                 <p className="text-sm font-semibold text-[#00243D]">Club pricing editor</p>
                 <p className="mt-2 text-sm leading-7 text-[#1A1A1A]/85">
-                  Edit the fixed payout values per condition. Conditions set to 0 will not appear to sellers.
+                  Set the average eBay selling price. Buy prices are calculated automatically per condition.
                 </p>
               </div>
 
@@ -221,21 +215,16 @@ export default function AdminPage() {
                     ))}
                   </select>
                 </label>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                {(['price_new', 'price_excellent', 'price_good', 'price_fair'] as const).map((field) => (
-                  <label key={field} className="block text-sm font-semibold text-[#00243D]">
-                    {field.replace('price_', '').replace('_', ' ')} price
-                    <input
-                      type="number"
-                      min="0"
-                      value={formClub[field] ?? 0}
-                      onChange={(event) => setFormClub((current) => ({ ...current, [field]: Number(event.target.value) }))}
-                      className="mt-3 w-full rounded-3xl border border-slate-300 bg-white px-4 py-4 text-sm text-[#1A1A1A] focus:border-[#00537E] focus:ring-2 focus:ring-[#00537E]/20"
-                    />
-                  </label>
-                ))}
+                <label className="block text-sm font-semibold text-[#00243D]">
+                  Average eBay selling price (£)
+                  <input
+                    type="number"
+                    min="0"
+                    value={formClub.price_avg ?? 0}
+                    onChange={(event) => setFormClub((current) => ({ ...current, price_avg: Number(event.target.value) }))}
+                    className="mt-3 w-full rounded-3xl border border-slate-300 bg-white px-4 py-4 text-sm text-[#1A1A1A] focus:border-[#00537E] focus:ring-2 focus:ring-[#00537E]/20"
+                  />
+                </label>
               </div>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -287,23 +276,9 @@ export default function AdminPage() {
                       </button>
                     </div>
                   </div>
-                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                    <div className="rounded-3xl bg-white p-4 text-sm text-[#1A1A1A]/85">
-                      <p className="font-semibold text-[#00243D]">New</p>
-                      <p>£{club.price_new.toFixed(2)}</p>
-                    </div>
-                    <div className="rounded-3xl bg-white p-4 text-sm text-[#1A1A1A]/85">
-                      <p className="font-semibold text-[#00243D]">Excellent</p>
-                      <p>£{club.price_excellent.toFixed(2)}</p>
-                    </div>
-                    <div className="rounded-3xl bg-white p-4 text-sm text-[#1A1A1A]/85">
-                      <p className="font-semibold text-[#00243D]">Good</p>
-                      <p>£{club.price_good.toFixed(2)}</p>
-                    </div>
-                    <div className="rounded-3xl bg-white p-4 text-sm text-[#1A1A1A]/85">
-                      <p className="font-semibold text-[#00243D]">Fair</p>
-                      <p>£{club.price_fair.toFixed(2)}</p>
-                    </div>
+                  <div className="mt-4 rounded-3xl bg-white p-4 text-sm text-[#1A1A1A]/85">
+                    <p className="font-semibold text-[#00243D]">Average eBay price</p>
+                    <p className="mt-1">£{club.price_avg.toFixed(2)}</p>
                   </div>
                 </div>
               ))}
@@ -317,7 +292,9 @@ export default function AdminPage() {
                   <div>
                     <p className="text-sm font-semibold text-[#00243D]">{order.full_name}</p>
                     <p className="mt-1 text-sm text-[#1A1A1A]/80">{order.email} · {order.phone}</p>
-                    <p className="mt-2 text-sm text-[#1A1A1A]/80">{order.collection_address}</p>
+                    <p className="mt-2 text-sm text-[#1A1A1A]/80">
+                      {[order.address_line1, order.address_line2, order.town, order.county, order.postcode].filter(Boolean).join(', ')}
+                    </p>
                     <p className="mt-1 text-sm text-[#1A1A1A]/80">PayPal: {order.paypal_email}</p>
                     <p className="mt-3 text-sm text-[#1A1A1A]/85">Total: £{order.total_amount.toFixed(2)}</p>
                   </div>

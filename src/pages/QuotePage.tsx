@@ -1,13 +1,12 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { supabase } from '../lib/supabase'
 import type { Club, ConditionTier, QuoteItem, QuoteSpec, OrderPayload } from '../lib/types'
+import { useBasket } from '../context/BasketContext'
 import {
   availableConditions,
   clubTypeLabels,
-  conditionDescriptions,
   conditionLabels,
   getClubFields,
   getConditionPrice,
@@ -21,42 +20,82 @@ function createQuoteLabel(club: Club) {
 }
 
 export default function QuotePage() {
+  console.log('QuotePage render')
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [selectedClub, setSelectedClub] = useState<Club | null>(null)
   const [selectedCondition, setSelectedCondition] = useState<ConditionTier | ''>('')
   const [specs, setSpecs] = useState<QuoteSpec>(initialSpec)
-  const [quoteItems, setQuoteItems] = useState<QuoteItem[]>([])
+  const { items: quoteItems, addItem, removeItem, clear, total: basketTotal } = useBasket()
+  const [showResults, setShowResults] = useState(false)
   const [showCheckout, setShowCheckout] = useState(false)
   const [step, setStep] = useState(1)
-  const [contact, setContact] = useState({ full_name: '', email: '', phone: '', collection_address: '' })
+  const [contact, setContact] = useState({ full_name: '', email: '', phone: '', address_line1: '', address_line2: '', town: '', county: '', postcode: '' })
   const [paypalEmail, setPaypalEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [clubs, setClubs] = useState<Club[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [clubsError, setClubsError] = useState<Error | null>(null)
 
-  const { data: clubs = [], isLoading } = useQuery<Club[]>({
-    queryKey: ['clubs'],
-    queryFn: async () => {
-      const { data, error } = await supabase.from('clubs').select('*').order('brand', { ascending: true })
-      if (error) throw error
-      return data || []
-    },
-    staleTime: 1000 * 60,
-  })
+  // basket handled by BasketProvider
+
+  useEffect(() => {
+    async function fetchClubs() {
+      setIsLoading(true)
+      setClubsError(null)
+
+      console.log('Fetching clubs from Supabase...')
+
+      try {
+        console.log('About to call supabase.from on clubs')
+        const { data, error } = await supabase.from('clubs').select('*').order('brand', { ascending: true })
+        console.log('Supabase clubs query response', { data, error })
+
+        if (error) {
+          console.error('Failed to load clubs:', error)
+          setClubsError(error)
+          setClubs([])
+        } else if (!data) {
+          console.error('Supabase clubs query returned no data and no error')
+          setClubs([])
+        } else {
+          console.log(`Loaded ${data.length} clubs from Supabase`)
+          setClubs(data)
+        }
+      } catch (fetchError) {
+        console.error('Supabase clubs query threw an exception:', fetchError)
+        setClubsError(fetchError instanceof Error ? fetchError : new Error(String(fetchError)))
+        setClubs([])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchClubs()
+  }, [])
 
   const filteredClubs = useMemo(() => {
+    if (!search.trim()) return []
     const searchFn = createClubSearch(clubs)
-    return searchFn(search)
+    return searchFn(search).slice(0, 8)
   }, [clubs, search])
 
-  const currentPrice = selectedClub && selectedCondition ? getConditionPrice(selectedClub, selectedCondition) : 0
-  const total = quoteItems.reduce((sum, item) => sum + item.price, 0)
+  const availableConditionsList = selectedClub ? availableConditions(selectedClub) : []
+  const selectedFields = selectedClub ? getClubFields(selectedClub.club_type) : []
+  const requiredFields = selectedFields.filter((field) => field.name !== 'conditionOnly')
+  const isDetailsComplete = selectedClub
+    ? requiredFields.every((field) => Boolean(specs[field.name as keyof QuoteSpec]))
+    : false
+  const quoteIsReady = Boolean(selectedClub && selectedCondition && isDetailsComplete)
+  const currentPrice = quoteIsReady && selectedClub && selectedCondition ? getConditionPrice(selectedClub, selectedCondition) : 0
+  const total = basketTotal
 
-  const canAdvanceToPayment = Object.values(contact).every(Boolean) && step === 1
+  const canAdvanceToPayment = [contact.full_name, contact.email, contact.phone, contact.address_line1, contact.town, contact.postcode].every(Boolean) && step === 1
   const canSubmit = paypalEmail.trim().length > 5 && step === 2
 
   async function handleAddToQuote() {
-    if (!selectedClub || !selectedCondition) {
-      toast.error('Choose a club and condition before adding to your quote.')
+    if (!selectedClub || !selectedCondition || !isDetailsComplete) {
+      toast.error('Choose a club, condition, and fill all required fields before adding to your quote.')
       return
     }
 
@@ -70,7 +109,7 @@ export default function QuotePage() {
       price: currentPrice,
     }
 
-    setQuoteItems((items) => [...items, newItem])
+    addItem(newItem)
     setSelectedClub(null)
     setSelectedCondition('')
     setSpecs(initialSpec)
@@ -78,25 +117,26 @@ export default function QuotePage() {
   }
 
   function handleRemoveItem(id: string) {
-    setQuoteItems((items) => items.filter((item) => item.id !== id))
+    removeItem(id)
   }
 
   function resetForm() {
     setShowCheckout(false)
     setStep(1)
-    setContact({ full_name: '', email: '', phone: '', collection_address: '' })
+    setContact({ full_name: '', email: '', phone: '', address_line1: '', address_line2: '', town: '', county: '', postcode: '' })
     setPaypalEmail('')
   }
 
   async function submitOrder() {
     if (!quoteItems.length) return
     setIsSubmitting(true)
+
     const payload: OrderPayload = {
-      ...contact,
-      paypal_email: paypalEmail,
-      items: quoteItems,
-      total_amount: total,
-    }
+  ...contact,
+  paypal_email: paypalEmail,
+  items: quoteItems,
+  total_amount: total,
+}
 
     try {
       const edgeUrl = import.meta.env.VITE_SUPABASE_EDGE_URL
@@ -117,7 +157,7 @@ export default function QuotePage() {
 
       const result = await response.json()
       toast.success('Order submitted successfully. Check your email for the postage label.')
-      setQuoteItems([])
+      clear()
       resetForm()
       navigate('/order-confirmation', { state: { order: result.order } })
     } catch (error) {
@@ -128,22 +168,14 @@ export default function QuotePage() {
     }
   }
 
-  const availableConditionsList = selectedClub ? availableConditions(selectedClub) : []
-  const selectedFields = selectedClub ? getClubFields(selectedClub.club_type) : []
-
   return (
     <div className="space-y-10">
-      <div className="rounded-[28px] border border-slate-200 bg-[#F4F4F4] p-8 shadow-sm">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Instant quote tool</p>
-            <h1 className="mt-3 text-3xl font-semibold text-[#00243D] sm:text-4xl">Find the current value of your golf clubs.</h1>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-[#1A1A1A]/85">
-              Type a brand or model name to see whether we buy your club, then add the exact condition and specs to build your basket.
-            </p>
-          </div>
+      <section className="-mt-10 -mx-4 sm:-mx-6 bg-[#00537E] text-white">
+        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+          <h1 className="text-3xl font-semibold sm:text-4xl">What are your clubs worth?</h1>
+          <p className="mt-3 max-w-3xl text-lg">Search below to build your offer. No obligation - see your valuation instantly.</p>
         </div>
-      </div>
+      </section>
 
       <section className="grid gap-8 xl:grid-cols-[1.45fr_0.95fr]">
         <div className="space-y-8">
@@ -151,38 +183,58 @@ export default function QuotePage() {
             <label className="block text-sm font-semibold text-[#00243D]">Search clubs</label>
             <input
               value={search}
-              onChange={(event) => setSearch(event.target.value)}
+              onChange={(event) => {
+                const value = event.target.value
+                setSearch(value)
+                setShowResults(!!value.trim())
+                if (selectedClub) {
+                  setSelectedClub(null)
+                  setSelectedCondition('')
+                  setSpecs(initialSpec)
+                }
+              }}
               placeholder="Search by brand, model or type"
               className="mt-3 w-full rounded-3xl border border-slate-300 bg-[#F9FAFB] px-4 py-4 text-sm text-[#1A1A1A] focus:border-[#00537E] focus:ring-2 focus:ring-[#00537E]/20"
             />
 
-            <div className="mt-6 space-y-3">
-              {isLoading ? (
-                <div className="rounded-3xl bg-slate-100 p-6 text-sm text-slate-500">Loading clubs…</div>
-              ) : filteredClubs.length ? (
-                filteredClubs.map((club) => (
-                  <button
-                    key={club.id}
-                    type="button"
-                    onClick={() => {
-                      setSelectedClub(club)
-                      setSelectedCondition('')
-                      setSpecs(initialSpec)
-                    }}
-                    className="flex w-full items-center justify-between rounded-3xl border border-slate-200 bg-[#F4F4F4] px-5 py-4 text-left transition hover:border-[#00537E]"
-                  >
-                    <div>
-                      <p className="font-semibold text-[#00243D]">{club.brand} {club.model}</p>
-                      <p className="text-sm text-[#1A1A1A]/80">{clubTypeLabels[club.club_type]}</p>
+            <div className="mt-3">
+              {showResults ? (
+                <div className="space-y-3">
+                  {isLoading ? (
+                    <div className="rounded-3xl bg-slate-100 p-6 text-sm text-slate-500">Loading clubs…</div>
+                  ) : clubsError ? (
+                    <div className="rounded-3xl bg-red-50 p-6 text-sm text-red-700">
+                      Unable to load clubs. Please refresh the page or try again later.
+                      {clubsError?.message ? ` ${clubsError.message}` : ''}
                     </div>
-                    <span className="text-sm font-semibold text-[#00537E]">Select</span>
-                  </button>
-                ))
-              ) : (
-                <div className="rounded-3xl bg-[#F4F4F4] p-6 text-sm text-[#1A1A1A]/80">
-                  We don't currently buy this club. Try another brand or model.
+                  ) : filteredClubs.length ? (
+                    filteredClubs.map((club) => (
+                      <button
+                        key={club.id}
+                        type="button"
+                        onClick={() => {
+                          setSelectedClub(club)
+                          setSelectedCondition('')
+                          setSpecs(initialSpec)
+                          setSearch('')
+                          setShowResults(false)
+                        }}
+                        className="flex w-full items-center justify-between rounded-3xl border border-slate-200 bg-[#F4F4F4] px-5 py-4 text-left transition hover:border-[#00537E]"
+                      >
+                        <div>
+                          <p className="font-semibold text-[#00243D]">{club.brand} {club.model}</p>
+                          <p className="text-sm text-[#1A1A1A]/80">{clubTypeLabels[club.club_type]}</p>
+                        </div>
+                        <span className="text-sm font-semibold text-[#00537E]">Select</span>
+                      </button>
+                    ))
+                  ) : (
+                    <div className="rounded-3xl bg-[#F4F4F4] p-6 text-sm text-[#1A1A1A]/80">
+                      We don't currently buy this club. Try another brand or model.
+                    </div>
+                  )}
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
 
@@ -241,36 +293,24 @@ export default function QuotePage() {
                     ))}
                   </select>
                 </label>
-                <div className="rounded-3xl border border-slate-200 bg-[#F4F4F4] p-5">
-                  <p className="text-sm font-semibold text-[#00243D]">Condition guide</p>
-                  <p className="mt-3 text-sm leading-7 text-[#1A1A1A]/85">Use this guide to self-assess your club condition before choosing.</p>
-                </div>
-              </div>
-
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                {(['new', 'excellent', 'good', 'fair'] as ConditionTier[]).map((condition) => {
-                  const price = getConditionPrice(selectedClub, condition)
-                  if (price <= 0) return null
-                  return (
-                    <div key={condition} className="rounded-3xl border border-slate-200 bg-[#F9FAFB] p-4">
-                      <p className="text-sm font-semibold text-[#00243D]">{conditionLabels[condition]}</p>
-                      <p className="mt-2 text-sm leading-6 text-[#1A1A1A]/80">{conditionDescriptions[condition]}</p>
-                      <p className="mt-4 text-lg font-semibold text-[#00537E]">£{price.toFixed(2)}</p>
-                    </div>
-                  )
-                })}
               </div>
 
               <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center">
                 <div>
                   <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Quote value</p>
-                  <p className="mt-2 text-3xl font-semibold text-[#00537E]">£{currentPrice.toFixed(2)}</p>
+                  {quoteIsReady ? (
+                    <p className="mt-2 text-3xl font-semibold text-[#00537E]">£{currentPrice.toFixed(2)}</p>
+                  ) : (
+                    <p className="mt-2 text-sm leading-7 text-[#1A1A1A]/80">
+                      Select the condition and complete all required club details to see your price.
+                    </p>
+                  )}
                 </div>
                 <button
                   type="button"
                   onClick={handleAddToQuote}
                   className="inline-flex items-center justify-center rounded-full bg-[#00537E] px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#003f5d] disabled:cursor-not-allowed disabled:bg-slate-400"
-                  disabled={!selectedCondition}
+                  disabled={!quoteIsReady}
                 >
                   Add to quote
                 </button>
@@ -386,9 +426,13 @@ export default function QuotePage() {
                     <div className="grid gap-4 sm:grid-cols-2">
                       {[
                         { label: 'Full name', name: 'full_name', value: contact.full_name },
-                        { label: 'Email', name: 'email', value: contact.email, type: 'email' },
-                        { label: 'Phone number', name: 'phone', value: contact.phone, type: 'tel' },
-                        { label: 'Collection address', name: 'collection_address', value: contact.collection_address, type: 'text' },
+{ label: 'Email', name: 'email', value: contact.email, type: 'email' },
+{ label: 'Phone number', name: 'phone', value: contact.phone, type: 'tel' },
+{ label: 'Address Line 1', name: 'address_line1', value: contact.address_line1 },
+{ label: 'Address Line 2 (optional)', name: 'address_line2', value: contact.address_line2 },
+{ label: 'Town / City', name: 'town', value: contact.town },
+{ label: 'County (optional)', name: 'county', value: contact.county },
+{ label: 'Postcode', name: 'postcode', value: contact.postcode },
                       ].map((field) => (
                         <label key={field.name} className="block text-sm font-medium text-[#00243D]">
                           {field.label}

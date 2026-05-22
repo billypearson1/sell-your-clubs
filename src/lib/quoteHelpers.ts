@@ -14,14 +14,12 @@ export const clubTypeLabels: Record<ClubType, string> = {
 export const conditionDescriptions: Record<ConditionTier, string> = {
   new: 'Unused, mint condition with no signs of wear.',
   excellent: 'Lightly used, excellent appearance with minimal marks.',
-  good: 'Used with light cosmetic wear, still ready to sell.',
-  fair: 'Visible wear or damage, but still functional and accepted.',
+  fair: 'Well-used with cosmetic wear. No dents or cracks.',
 }
 
 export const conditionLabels: Record<ConditionTier, string> = {
-  new: 'New (unused)',
+  new: 'New',
   excellent: 'Excellent',
-  good: 'Good',
   fair: 'Fair',
 }
 
@@ -38,10 +36,9 @@ export const shaftMaterialOptions = ['Steel', 'Graphite'] as const
 
 const MARGIN = 0.55
 const CONDITION_MULTIPLIERS: Record<ConditionTier, number> = {
-  new: 1.03,
+  new: 1.00,
   excellent: 1.0,
-  good: 0.90,
-  fair: 0.75,
+  fair: 0.90,
 }
 
 export function getConditionPrice(club: Club, condition: ConditionTier) {
@@ -50,7 +47,7 @@ export function getConditionPrice(club: Club, condition: ConditionTier) {
 
 export function availableConditions(club: Club): ConditionTier[] {
   if (!club.price_avg || club.price_avg <= 0) return []
-  return ['new', 'excellent', 'good', 'fair'] as ConditionTier[]
+  return ['new', 'excellent', 'fair'] as ConditionTier[]
 }
 
 export function getClubFields(type: ClubType) {
@@ -101,6 +98,6 @@ export function createClubSearch(clubs: Club[]) {
   })
   return (query: string) => {
     if (!query.trim()) return clubs
-    return fuse.search(query).map((result) => result.item)
+    return fuse.search(query).slice(0, 5).map((result) => result.item)
   }
 }

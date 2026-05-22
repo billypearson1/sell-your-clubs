@@ -8,7 +8,7 @@ export type ClubType =
   | 'putter'
   | 'complete_bag'
 
-export type ConditionTier = 'new' | 'excellent' | 'good' | 'fair'
+export type ConditionTier = 'new' | 'excellent' | 'fair'
 
 export interface Club {
   id: number
@@ -49,8 +49,19 @@ export interface OrderPayload {
   total_amount: number
 }
 
-export interface OrderRow extends OrderPayload {
+export interface OrderRow {
   id: string
+  full_name: string
+  email: string
+  phone: string
+  address_line1: string
+  address_line2: string
+  town: string
+  county: string
+  postcode: string
+  paypal_email: string
+  items: QuoteItem[]
+  total_amount: number
   status: 'pending' | 'label_sent' | 'received' | 'paid' | 'rejected'
   created_at: string
   updated_at: string
