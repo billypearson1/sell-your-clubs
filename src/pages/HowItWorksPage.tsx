@@ -31,7 +31,7 @@ export default function HowItWorksPage() {
           <div>
             <p className="text-lg font-semibold text-[#00243D]">2. Send your clubs for free</p>
             <p className="mt-2 text-sm leading-7 text-[#1A1A1A]/85">
-              Accept your offer and complete your details. We'll email a free postage label to you within 24 hours. Pack your clubs securely and drop them at your nearest drop-off point — it costs you nothing.
+              Accept your offer and complete your details. We'll send a free postage box and label to you within 24 hours. Pack your clubs securely and drop them at your nearest drop-off point — it costs you nothing.
             </p>
           </div>
         </div>
