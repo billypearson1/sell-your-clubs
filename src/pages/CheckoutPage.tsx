@@ -50,10 +50,13 @@ export default function CheckoutPage() {
       if (!edgeUrl) throw new Error('Edge function URL is not configured')
 
       const response = await fetch(`${edgeUrl}/send-order-email`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+  },
+  body: JSON.stringify(payload),
+})
 
       if (!response.ok) {
         const error = await response.text()
