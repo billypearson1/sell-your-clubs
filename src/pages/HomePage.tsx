@@ -48,8 +48,8 @@ export default function HomePage() {
       </section>
 
       {/* Brand strip */}
-      <div className="w-full bg-[#F4F4F4]">
-        <div className="mx-auto grid w-full max-w-7xl grid-cols-3 gap-4 px-4 py-4 text-sm font-semibold text-[#00243D] sm:grid-cols-9 sm:px-6">
+      <div className="-mx-4 w-[calc(100%+2rem)] sm:-mx-6 sm:w-[calc(100%+3rem)] bg-[#F4F4F4]">
+  <div className="mx-auto grid w-full max-w-7xl grid-cols-3 gap-4 px-4 py-4 text-sm font-semibold text-[#00243D] sm:grid-cols-9 sm:px-6">
           {['Callaway','TaylorMade','Titleist','Ping','Cobra','Cleveland','Mizuno','Srixon'].map((b) => (
             <div key={b} className="opacity-90 text-center">{b}</div>
           ))}
