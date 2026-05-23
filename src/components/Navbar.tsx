@@ -66,7 +66,7 @@ export default function Navbar() {
             type="button"
             aria-label="basket"
             onClick={() => setIsOpen(true)}
-            className="rounded-full bg-[#00537E] px-3 py-2 text-sm font-semibold text-white"
+            className="rounded-[8px] bg-[#00537E] px-3 py-2 text-sm font-semibold text-white"
           >
             <div className="flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -79,10 +79,13 @@ export default function Navbar() {
         </div>
       </div>
 
-      {isOpen ? (
-        <div className="fixed inset-0 z-30 flex">
-          <div className="flex-1" onClick={() => setIsOpen(false)} />
-          <aside className="w-96 max-w-full border-l border-slate-200 bg-white p-6 shadow-xl">
+      
+    </header>
+
+    {isOpen ? (
+        <div className="fixed inset-0 z-50 flex">
+  <div className="flex-1 bg-black/40" onClick={() => setIsOpen(false)} />
+          <aside className="relative z-50 w-96 max-w-full border-l border-slate-200 bg-white p-6 shadow-xl">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold">Your basket</h3>
               <button onClick={() => setIsOpen(false)} className="text-slate-500">Close</button>
@@ -113,14 +116,13 @@ export default function Navbar() {
                 <p className="text-xl font-semibold">£{total.toFixed(2)}</p>
               </div>
               <div className="flex items-center gap-2">
-                <button onClick={() => clear()} className="rounded-full border px-3 py-2 text-sm">Clear</button>
-                <button onClick={() => { setIsOpen(false); navigate('/quote') }} className="rounded-full bg-[#00537E] px-4 py-2 text-sm font-semibold text-white">Checkout</button>
+                <button onClick={() => clear()} className="rounded-[8px] border px-3 py-2 text-sm">Clear</button>
+<button onClick={() => { setIsOpen(false); navigate('/quote') }} className="rounded-[8px] bg-[#00537E] px-4 py-2 text-sm font-semibold text-white">Checkout</button>
               </div>
             </div>
           </aside>
         </div>
       ) : null}
-    </header>
     </>
   )
 }

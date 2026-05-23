@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 import HomePage from './pages/HomePage'
 import QuotePage from './pages/QuotePage'
@@ -13,22 +12,21 @@ import NotFoundPage from './pages/NotFoundPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import Navbar from './components/Navbar'
 import { BasketProvider } from './context/BasketContext'
-
-const queryClient = new QueryClient()
+import CheckoutPage from './pages/CheckoutPage'
 
 // navigation handled in Navbar component
 
 function App() {
   return (
     <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
         <BasketProvider>
           <div className="min-h-screen flex flex-col bg-white text-[#1A1A1A]">
             <Navbar />
-            <main className="flex-1 w-full px-4 py-10 sm:px-6">
+            <main className="flex-1 w-full bg-white px-4 py-10 sm:px-6">
               <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/quote" element={<QuotePage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
               <Route path="/account" element={<AccountPage />} />
               <Route path="/blog" element={<BlogPage />} />
@@ -73,7 +71,6 @@ function App() {
           </div>
           <Toaster position="top-right" richColors />
         </BasketProvider>
-      </QueryClientProvider>
     </BrowserRouter>
   )
 }

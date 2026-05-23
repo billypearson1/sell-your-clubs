@@ -43,7 +43,11 @@ export interface OrderPayload {
   full_name: string
   email: string
   phone: string
-  collection_address: string
+  address_line1: string
+  address_line2: string
+  town: string
+  county: string
+  postcode: string
   paypal_email: string
   items: QuoteItem[]
   total_amount: number
