@@ -11,6 +11,7 @@ import {
   getClubFields,
   getConditionPrice,
   createClubSearch,
+  AFTERMARKET_SHAFTS,
 } from '../lib/quoteHelpers'
 
 const initialSpec: QuoteSpec = {}
@@ -19,12 +20,43 @@ function createQuoteLabel(club: Club) {
   return `${club.brand} ${club.model} — ${clubTypeLabels[club.club_type]}`
 }
 
+function AftermarketInfo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <span className="relative inline-block ml-2">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#00537E] text-white text-xs font-bold leading-none"
+        aria-label="Eligible aftermarket shafts"
+      >
+        ?
+      </button>
+      {open && (
+        <div className="absolute left-0 top-7 z-50 w-72 rounded-[16px] border border-slate-200 bg-white p-4 shadow-xl">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-sm font-semibold text-[#00243D]">Eligible aftermarket shafts</p>
+            <button type="button" onClick={() => setOpen(false)} className="text-slate-400 hover:text-slate-600 text-xs">Close</button>
+          </div>
+          <p className="text-xs text-[#1A1A1A]/70 mb-3">Only the following shafts qualify for the +£50 bonus. If your shaft isn't listed, please select Stock shaft.</p>
+          <ul className="space-y-1">
+            {AFTERMARKET_SHAFTS.map((shaft) => (
+              <li key={shaft} className="text-xs text-[#1A1A1A]/85">• {shaft}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </span>
+  )
+}
+
 export default function QuotePage() {
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [selectedClub, setSelectedClub] = useState<Club | null>(null)
   const [selectedCondition, setSelectedCondition] = useState<ConditionTier | ''>('')
   const [specs, setSpecs] = useState<QuoteSpec>(initialSpec)
+  const [aftermarketShaft, setAftermarketShaft] = useState(false)
   const { items: quoteItems, addItem, removeItem, total: basketTotal } = useBasket()
   const [showResults, setShowResults] = useState(false)
   const [clubs, setClubs] = useState<Club[]>([])
@@ -61,13 +93,13 @@ export default function QuotePage() {
 
   const availableConditionsList = selectedClub ? availableConditions(selectedClub) : []
   const selectedFields = selectedClub ? getClubFields(selectedClub.club_type) : []
-  const requiredFields = selectedFields.filter((field) => field.name !== 'conditionOnly')
+  const requiredFields = selectedFields.filter((field) => field.name !== 'conditionOnly' && field.name !== 'aftermarket_shaft')
   const isDetailsComplete = selectedClub
     ? requiredFields.every((field) => Boolean(specs[field.name as keyof QuoteSpec]))
     : false
   const quoteIsReady = Boolean(selectedClub && selectedCondition && isDetailsComplete)
   const currentPrice = quoteIsReady && selectedClub && selectedCondition
-    ? getConditionPrice(selectedClub, selectedCondition)
+    ? getConditionPrice(selectedClub, selectedCondition, specs, aftermarketShaft)
     : 0
   const total = basketTotal
 
@@ -77,12 +109,17 @@ export default function QuotePage() {
       return
     }
 
+    const specsWithAftermarket: QuoteSpec = {
+      ...specs,
+      ...(aftermarketShaft ? { aftermarket_shaft: 'Yes (+£50)' } : {}),
+    }
+
     const newItem: QuoteItem = {
       id: crypto.randomUUID(),
       clubId: selectedClub.id,
       title: createQuoteLabel(selectedClub),
       type: selectedClub.club_type,
-      specs,
+      specs: specsWithAftermarket,
       condition: selectedCondition,
       price: currentPrice,
     }
@@ -91,12 +128,15 @@ export default function QuotePage() {
     setSelectedClub(null)
     setSelectedCondition('')
     setSpecs(initialSpec)
+    setAftermarketShaft(false)
     toast.success('Club added to your quote.')
   }
 
   function handleRemoveItem(id: string) {
     removeItem(id)
   }
+
+  const hasAftermarketField = selectedFields.some((f) => f.name === 'aftermarket_shaft')
 
   return (
     <div className="space-y-10">
@@ -121,6 +161,7 @@ export default function QuotePage() {
                   setSelectedClub(null)
                   setSelectedCondition('')
                   setSpecs(initialSpec)
+                  setAftermarketShaft(false)
                 }
               }}
               placeholder="Search by brand, model or type"
@@ -145,6 +186,7 @@ export default function QuotePage() {
                           setSelectedClub(club)
                           setSelectedCondition('')
                           setSpecs(initialSpec)
+                          setAftermarketShaft(false)
                           setSearch('')
                           setShowResults(false)
                         }}
@@ -183,6 +225,7 @@ export default function QuotePage() {
               <div className="grid gap-4 md:grid-cols-2">
                 {selectedFields.map((field) => {
                   if (field.name === 'conditionOnly') return null
+                  if (field.name === 'aftermarket_shaft') return null
                   const value = specs[field.name as keyof QuoteSpec] ?? ''
                   const options = Array.isArray(field.options) ? field.options : []
                   return (
@@ -207,6 +250,31 @@ export default function QuotePage() {
                   )
                 })}
               </div>
+
+              {hasAftermarketField && (
+                <div className="mt-4">
+                  <p className="text-sm font-medium text-[#00243D] flex items-center">
+                    Aftermarket shaft
+                    <AftermarketInfo />
+                  </p>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    <button
+                      type="button"
+                      onClick={() => setAftermarketShaft(false)}
+                      className={`rounded-[8px] border px-4 py-3 text-sm font-semibold text-left transition ${!aftermarketShaft ? 'border-[#00537E] bg-[#EAF7FF] text-[#00537E]' : 'border-slate-200 bg-white text-[#00243D] hover:bg-slate-50'}`}
+                    >
+                      Stock shaft
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAftermarketShaft(true)}
+                      className={`rounded-[8px] border px-4 py-3 text-sm font-semibold text-left transition ${aftermarketShaft ? 'border-[#00537E] bg-[#EAF7FF] text-[#00537E]' : 'border-slate-200 bg-white text-[#00243D] hover:bg-slate-50'}`}
+                    >
+                      Aftermarket shaft (+£50)
+                    </button>
+                  </div>
+                </div>
+              )}
 
               <div className="mt-6">
                 <label className="block text-sm font-medium text-[#00243D]">
@@ -269,7 +337,7 @@ export default function QuotePage() {
                         <p className="mt-2 text-sm text-[#1A1A1A]/80">
                           {Object.entries(item.specs)
                             .filter(([, value]) => value)
-                            .map(([key, value]) => `${key.replace('_', ' ')}: ${value}`)
+                            .map(([key, value]) => `${key.replace(/_/g, ' ')}: ${value}`)
                             .join(' · ')}
                         </p>
                       </div>

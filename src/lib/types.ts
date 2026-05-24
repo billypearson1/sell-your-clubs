@@ -27,6 +27,7 @@ export interface QuoteSpec {
   headcover?: 'Yes' | 'No'
   shaft_material?: 'Steel' | 'Graphite'
   length?: 'Standard' | 'Long'
+  aftermarket_shaft?: string
 }
 
 export interface QuoteItem {

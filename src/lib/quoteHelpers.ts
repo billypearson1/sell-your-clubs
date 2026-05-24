@@ -1,4 +1,4 @@
-import type { Club, ClubType, ConditionTier } from './types'
+import type { Club, ClubType, ConditionTier, QuoteSpec } from './types'
 
 export const clubTypeLabels: Record<ClubType, string> = {
   driver: 'Driver',
@@ -34,6 +34,45 @@ export const dexterityOptions = ['Right', 'Left'] as const
 export const lengthOptions = ['Standard', 'Long'] as const
 export const shaftMaterialOptions = ['Steel', 'Graphite'] as const
 
+export const AFTERMARKET_SHAFTS = [
+  'Fujikura Ventus Velocore Blue',
+  'Fujikura Ventus Velocore Red',
+  'Fujikura Ventus Velocore Black',
+  'Fujikura Ventus Velocore+ Blue',
+  'Fujikura Ventus Velocore+ Red',
+  'Fujikura Ventus Velocore+ Black',
+  'Fujikura Speeder NX Green',
+  'Graphite Design Tour AD DI',
+  'Graphite Design Tour AD UB',
+  'Graphite Design Tour AD HD',
+  'Graphite Design Tour AD IZ',
+  'Graphite Design Tour AD XC',
+  'Mitsubishi Diamana WB',
+  'Mitsubishi Diamana RB',
+  'Mitsubishi Diamana TB',
+  'Mitsubishi Diamana GT',
+  'Accra TZ Six',
+  'Accra GX',
+  'Accra TZ RPG',
+  'Project X HZRDUS Smoke Green Small Batch',
+]
+
+export const AFTERMARKET_BONUS = 50
+
+// Spec-based price adjustments
+export const SPEC_ADJUSTMENTS: Partial<Record<keyof QuoteSpec, Record<string, number>>> = {
+  shaft_flex: {
+    'Regular': 0,
+    'Stiff': 0,
+    'X-Stiff': 0,
+    'Light-Senior': -34,
+    'Ladies': -43,
+  },
+  headcover: {
+    'Yes': 0,
+    'No': -10,
+  },
+}
 
 const CONDITION_MULTIPLIERS: Record<ConditionTier, number> = {
   new: 0.74,
@@ -41,8 +80,23 @@ const CONDITION_MULTIPLIERS: Record<ConditionTier, number> = {
   fair: 0.60,
 }
 
-export function getConditionPrice(club: Club, condition: ConditionTier) {
-  return Math.round(club.price_avg * CONDITION_MULTIPLIERS[condition] * 100) / 100
+export function getConditionPrice(club: Club, condition: ConditionTier, specs?: QuoteSpec, aftermarket?: boolean): number {
+  let price = Math.round(club.price_avg * CONDITION_MULTIPLIERS[condition] * 100) / 100
+
+  if (specs) {
+    for (const [key, adjustments] of Object.entries(SPEC_ADJUSTMENTS)) {
+      const specValue = specs[key as keyof QuoteSpec]
+      if (specValue && adjustments[specValue] !== undefined) {
+        price += adjustments[specValue]
+      }
+    }
+  }
+
+  if (aftermarket) {
+    price += AFTERMARKET_BONUS
+  }
+
+  return Math.max(0, Math.round(price * 100) / 100)
 }
 
 export function availableConditions(club: Club): ConditionTier[] {
@@ -60,6 +114,7 @@ export function getClubFields(type: ClubType) {
         ...baseFields,
         { name: 'loft', label: 'Loft', options: loftOptions },
         { name: 'shaft_flex', label: 'Shaft flex', options: shaftFlexOptions },
+        { name: 'aftermarket_shaft', label: 'Aftermarket shaft', options: ['No', 'Yes (+£50)'] },
         { name: 'headcover', label: 'Headcover included', options: ['Yes', 'No'] },
       ]
     case 'iron_set':
@@ -88,7 +143,6 @@ export function getClubFields(type: ClubType) {
 }
 
 import Fuse from 'fuse.js'
-
 export function createClubSearch(clubs: Club[]) {
   const fuse = new Fuse(clubs, {
     keys: ['brand', 'model'],
