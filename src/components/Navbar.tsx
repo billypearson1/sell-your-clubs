@@ -122,7 +122,7 @@ export default function Navbar() {
               </div>
               <div className="flex items-center gap-2">
                 <button onClick={() => clear()} className="rounded-[8px] border px-3 py-2 text-sm">Clear</button>
-                <button onClick={() => { setIsOpen(false); navigate('/quote') }} className="rounded-[8px] bg-[#00537E] px-4 py-2 text-sm font-semibold text-white">Checkout</button>
+                <button onClick={() => { setIsOpen(false); navigate('/checkout', { state: { items, total } }) }} className="rounded-[8px] bg-[#00537E] px-4 py-2 text-sm font-semibold text-white">Checkout</button>
               </div>
             </div>
           </aside>
