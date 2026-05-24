@@ -34,15 +34,15 @@ export const dexterityOptions = ['Right', 'Left'] as const
 export const lengthOptions = ['Standard', 'Long'] as const
 export const shaftMaterialOptions = ['Steel', 'Graphite'] as const
 
-const MARGIN = 0.55
+
 const CONDITION_MULTIPLIERS: Record<ConditionTier, number> = {
-  new: 1.00,
-  excellent: 1.0,
-  fair: 0.90,
+  new: 0.74,
+  excellent: 0.68,
+  fair: 0.60,
 }
 
 export function getConditionPrice(club: Club, condition: ConditionTier) {
-  return Math.round(club.price_avg * MARGIN * CONDITION_MULTIPLIERS[condition] * 100) / 100
+  return Math.round(club.price_avg * CONDITION_MULTIPLIERS[condition] * 100) / 100
 }
 
 export function availableConditions(club: Club): ConditionTier[] {
