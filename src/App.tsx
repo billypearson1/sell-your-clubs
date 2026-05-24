@@ -19,6 +19,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Navbar from './components/Navbar'
 import { BasketProvider } from './context/BasketContext'
 import CheckoutPage from './pages/CheckoutPage'
+import BlogPostPage from './pages/BlogPostPage'
 
 // navigation handled in Navbar component
 
@@ -36,6 +37,7 @@ function App() {
               <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
               <Route path="/account" element={<AccountPage />} />
               <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:slug" element={<BlogPostPage />} />
               <Route path="/price-match" element={<PriceMatchPage />} />
               <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
               <Route path="/login" element={<LoginPage />} />
