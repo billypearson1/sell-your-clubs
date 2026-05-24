@@ -3,11 +3,11 @@ import { useState } from 'react'
 const faqs = [
   {
     q: 'How do I get a quote?',
-    a: 'Use our quote tool to search for your club by brand or model. Select the condition and specs, and your offer price will appear instantly. Add multiple clubs to build your basket.',
+    a: 'Search and add clubs to your basket for an instant offer. Select the condition and specs, and your offer price will appear instantly. Add multiple clubs to build your basket.',
   },
   {
     q: 'How do I send my clubs?',
-    a: "After accepting your offer, we'll email you a free postage label within 24 hours. Pack your clubs securely and drop them at your nearest drop-off point — check the courier details on your label.",
+    a: "After accepting your offer, we'll send a free postage box and label to you within 24 hours. Pack your clubs securely and drop them at your nearest drop-off point — check the courier details on your label.",
   },
   {
     q: 'When do I get paid?',

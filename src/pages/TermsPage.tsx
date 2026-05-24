@@ -11,10 +11,10 @@ export default function TermsPage() {
         <p>By using sellyourclubs.co.uk and submitting a quote or order, you agree to these terms and conditions. Please read them carefully before proceeding.</p>
 
         <h2 className="text-lg font-semibold text-[#00243D]">2. Quotes</h2>
-        <p>All quotes are based on the condition and specifications you provide. Quotes are valid for 7 days from the date of issue. We reserve the right to revise a quote if the actual condition of the club differs from what was stated.</p>
+        <p>All quotes are based on the condition and specifications you provide at the time of building your basket. Quote prices are only guaranteed at the point of submission — we reserve the right to update our prices at any time. We also reserve the right to revise a quote if the actual condition of the club differs from what was stated.</p>
 
         <h2 className="text-lg font-semibold text-[#00243D]">3. Sending your clubs</h2>
-        <p>We will provide a free postage label within 24 hours of your order being accepted. You are responsible for packing your clubs securely. We cannot accept liability for damage caused by inadequate packaging.</p>
+        <p>We will provide a free postage box and label within 24 hours of your order being accepted. You are responsible for packing your clubs securely. We cannot accept liability for any loss or damage to clubs once they have been handed to the courier, including damage caused by inadequate packaging, loss in transit, or delays by the courier service. We recommend retaining your proof of postage.</p>
 
         <h2 className="text-lg font-semibold text-[#00243D]">4. Inspection and revised offers</h2>
         <p>On receipt of your clubs we will inspect them and confirm the agreed price. If the clubs differ materially from the stated condition, we will contact you with a revised offer. You may accept the revised offer or request your clubs be returned free of charge.</p>
