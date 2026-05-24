@@ -51,7 +51,7 @@ export default function Navbar() {
                 Sell
               </NavLink>
               <NavLink to="/blog" className="rounded-[8px] px-4 py-3 text-sm font-semibold text-[#00243D] transition hover:bg-slate-100">
-                Guides
+                Reviews and Articles
               </NavLink>
             </nav>
           </div>
