@@ -20,6 +20,7 @@ export default function CheckoutPage() {
     county: '',
     postcode: '',
   })
+  const [needsBox, setNeedsBox] = useState<boolean | null>(null)
   const [paypalEmail, setPaypalEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -30,7 +31,7 @@ export default function CheckoutPage() {
     contact.address_line1,
     contact.town,
     contact.postcode,
-  ].every(Boolean)
+  ].every(Boolean) && needsBox !== null
 
   const canSubmit = paypalEmail.trim().length > 5
 
@@ -41,6 +42,7 @@ export default function CheckoutPage() {
     const payload: OrderPayload = {
       ...contact,
       paypal_email: paypalEmail,
+      needs_box: needsBox ?? false,
       items,
       total_amount: total,
     }
@@ -50,13 +52,13 @@ export default function CheckoutPage() {
       if (!edgeUrl) throw new Error('Edge function URL is not configured')
 
       const response = await fetch(`${edgeUrl}/send-order-email`, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-  },
-  body: JSON.stringify(payload),
-})
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify(payload),
+      })
 
       if (!response.ok) {
         const error = await response.text()
@@ -81,8 +83,8 @@ export default function CheckoutPage() {
         <p className="mt-3 text-sm text-[#1A1A1A]/80">Go back and add some clubs to your quote first.</p>
         <button
           type="button"
-          onClick={() => navigate('/sell')}
-          className="mt-6 inline-flex items-center justify-center rounded-full bg-[#00537E] px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#003f5d]"
+          onClick={() => navigate('/quote')}
+          className="mt-6 inline-flex items-center justify-center rounded-[8px] bg-[#00537E] px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#003f5d]"
         >
           Back to quote tool
         </button>
@@ -98,12 +100,12 @@ export default function CheckoutPage() {
             <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Checkout</p>
             <h1 className="mt-2 text-3xl font-semibold text-[#00243D]">Complete your order</h1>
             <p className="mt-3 text-sm leading-7 text-[#1A1A1A]/85">
-              Fill in your details below and we'll email your free postage label within 24 hours.
+              Fill in your details below and we'll be in touch within 24 hours.
             </p>
           </div>
           <button
             type="button"
-            onClick={() => navigate('/sell')}
+            onClick={() => navigate('/quote')}
             className="text-sm font-semibold text-[#00537E] hover:text-[#003f5d]"
           >
             ← Back to quote
@@ -119,7 +121,7 @@ export default function CheckoutPage() {
                 key={n}
                 type="button"
                 onClick={() => n < step && setStep(n)}
-                className={`rounded-3xl border px-4 py-3 text-sm font-semibold ${
+                className={`rounded-[8px] border px-4 py-3 text-sm font-semibold ${
                   step === n
                     ? 'border-[#00537E] bg-[#EAF7FF] text-[#00537E]'
                     : 'border-slate-200 bg-white text-[#1A1A1A]/80'
@@ -149,16 +151,38 @@ export default function CheckoutPage() {
                       value={field.value}
                       type={field.type ?? 'text'}
                       onChange={(e) => setContact((c) => ({ ...c, [field.name]: e.target.value }))}
-                      className="mt-3 w-full rounded-3xl border border-slate-300 bg-[#F9FAFB] px-4 py-4 text-sm text-[#1A1A1A] focus:border-[#00537E] focus:ring-2 focus:ring-[#00537E]/20"
+                      className="mt-3 w-full rounded-[8px] border border-slate-300 bg-[#F9FAFB] px-4 py-4 text-sm text-[#1A1A1A] focus:border-[#00537E] focus:ring-2 focus:ring-[#00537E]/20"
                     />
                   </label>
                 ))}
+
+                <div className="col-span-2 mt-2">
+                  <p className="text-sm font-medium text-[#00243D]">Postage box</p>
+                  <p className="mt-1 text-sm text-[#1A1A1A]/80">Do you need us to send you a free postage box, or do you already have suitable packaging?</p>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    <button
+                      type="button"
+                      onClick={() => setNeedsBox(true)}
+                      className={`rounded-[8px] border px-4 py-3 text-sm font-semibold text-left transition ${needsBox === true ? 'border-[#00537E] bg-[#EAF7FF] text-[#00537E]' : 'border-slate-200 bg-white text-[#00243D] hover:bg-slate-50'}`}
+                    >
+                      Send me a free postage box
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setNeedsBox(false)}
+                      className={`rounded-[8px] border px-4 py-3 text-sm font-semibold text-left transition ${needsBox === false ? 'border-[#00537E] bg-[#EAF7FF] text-[#00537E]' : 'border-slate-200 bg-white text-[#00243D] hover:bg-slate-50'}`}
+                    >
+                      I already have packaging
+                    </button>
+                  </div>
+                </div>
               </div>
+
               <button
                 type="button"
                 onClick={() => setStep(2)}
                 disabled={!canAdvanceToPayment}
-                className="mt-6 inline-flex items-center justify-center rounded-full bg-[#00537E] px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#003f5d] disabled:cursor-not-allowed disabled:bg-slate-400"
+                className="mt-6 inline-flex items-center justify-center rounded-[8px] bg-[#00537E] px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#003f5d] disabled:cursor-not-allowed disabled:bg-slate-400"
               >
                 Continue to payment details
               </button>
@@ -173,10 +197,10 @@ export default function CheckoutPage() {
                   value={paypalEmail}
                   type="email"
                   onChange={(e) => setPaypalEmail(e.target.value)}
-                  className="mt-3 w-full rounded-3xl border border-slate-300 bg-[#F9FAFB] px-4 py-4 text-sm text-[#1A1A1A] focus:border-[#00537E] focus:ring-2 focus:ring-[#00537E]/20"
+                  className="mt-3 w-full rounded-[8px] border border-slate-300 bg-[#F9FAFB] px-4 py-4 text-sm text-[#1A1A1A] focus:border-[#00537E] focus:ring-2 focus:ring-[#00537E]/20"
                 />
               </label>
-              <div className="mt-6 rounded-3xl border border-slate-200 bg-[#F4F4F4] p-5">
+              <div className="mt-6 rounded-[28px] border border-slate-200 bg-[#F4F4F4] p-5">
                 <p className="text-sm font-semibold text-[#00243D]">Payment reassurance</p>
                 <p className="mt-2 text-sm leading-7 text-[#1A1A1A]/85">
                   We'll send payment to your PayPal within 2 working days of receiving and verifying your clubs.
@@ -186,7 +210,7 @@ export default function CheckoutPage() {
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="rounded-full border border-slate-300 bg-white px-6 py-4 text-sm font-semibold text-[#00243D] transition hover:bg-slate-50"
+                  className="rounded-[8px] border border-slate-300 bg-white px-6 py-4 text-sm font-semibold text-[#00243D] transition hover:bg-slate-50"
                 >
                   Back
                 </button>
@@ -194,7 +218,7 @@ export default function CheckoutPage() {
                   type="button"
                   onClick={() => setStep(3)}
                   disabled={!canSubmit}
-                  className="rounded-full bg-[#00537E] px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#003f5d] disabled:cursor-not-allowed disabled:bg-slate-400"
+                  className="rounded-[8px] bg-[#00537E] px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#003f5d] disabled:cursor-not-allowed disabled:bg-slate-400"
                 >
                   Review & confirm
                 </button>
@@ -206,13 +230,15 @@ export default function CheckoutPage() {
             <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
               <p className="text-base font-semibold text-[#00243D]">Review your order</p>
               <div className="mt-4 space-y-4">
-                <div className="rounded-3xl bg-[#F4F4F4] p-5">
-                  <p className="font-semibold text-[#00243D]">Postage label</p>
+                <div className="rounded-[28px] bg-[#F4F4F4] p-5">
+                  <p className="font-semibold text-[#00243D]">Postage</p>
                   <p className="mt-2 text-sm text-[#1A1A1A]/85">
-                    We'll send a free postage box and label to {contact.address_line1}, {contact.town}, {contact.postcode} within 24 hours.
+                    {needsBox
+                      ? `We'll send a free postage box and label to ${contact.address_line1}, ${contact.town}, ${contact.postcode} within 24 hours.`
+                      : `We'll email your free postage label to ${contact.email} within 24 hours. Use your own packaging.`}
                   </p>
                 </div>
-                <div className="rounded-3xl bg-[#F4F4F4] p-5">
+                <div className="rounded-[28px] bg-[#F4F4F4] p-5">
                   <p className="font-semibold text-[#00243D]">PayPal payment</p>
                   <p className="mt-2 text-sm text-[#1A1A1A]/85">
                     £{total.toFixed(2)} will be sent to {paypalEmail} within 2 working days of us receiving and verifying your clubs.
@@ -223,7 +249,7 @@ export default function CheckoutPage() {
                 <button
                   type="button"
                   onClick={() => setStep(2)}
-                  className="rounded-full border border-slate-300 bg-white px-6 py-4 text-sm font-semibold text-[#00243D] transition hover:bg-slate-50"
+                  className="rounded-[8px] border border-slate-300 bg-white px-6 py-4 text-sm font-semibold text-[#00243D] transition hover:bg-slate-50"
                 >
                   Back
                 </button>
@@ -231,7 +257,7 @@ export default function CheckoutPage() {
                   type="button"
                   onClick={submitOrder}
                   disabled={isSubmitting}
-                  className="inline-flex items-center justify-center rounded-full bg-[#00537E] px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#003f5d] disabled:cursor-not-allowed disabled:bg-slate-400"
+                  className="inline-flex items-center justify-center rounded-[8px] bg-[#00537E] px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#003f5d] disabled:cursor-not-allowed disabled:bg-slate-400"
                 >
                   {isSubmitting ? 'Submitting…' : `Submit order — £${total.toFixed(2)}`}
                 </button>
@@ -248,7 +274,7 @@ export default function CheckoutPage() {
             </div>
             <div className="mt-4 space-y-3">
               {items.map((item) => (
-                <div key={item.id} className="rounded-3xl border border-slate-200 bg-[#F4F4F4] p-4">
+                <div key={item.id} className="rounded-[28px] border border-slate-200 bg-[#F4F4F4] p-4">
                   <p className="font-semibold text-[#00243D]">{item.title}</p>
                   <p className="mt-1 text-sm text-[#1A1A1A]/80">Condition: {conditionLabels[item.condition]}</p>
                   <p className="mt-2 text-sm font-semibold text-[#00537E]">£{item.price.toFixed(2)}</p>

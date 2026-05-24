@@ -49,6 +49,7 @@ export interface OrderPayload {
   county: string
   postcode: string
   paypal_email: string
+  needs_box: boolean
   items: QuoteItem[]
   total_amount: number
 }
@@ -64,6 +65,7 @@ export interface OrderRow {
   county: string
   postcode: string
   paypal_email: string
+  needs_box: boolean
   items: QuoteItem[]
   total_amount: number
   status: 'pending' | 'label_sent' | 'received' | 'paid' | 'rejected'

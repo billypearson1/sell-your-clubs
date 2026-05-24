@@ -32,6 +32,7 @@ interface Payload {
   county: string
   postcode: string
   paypal_email: string
+  needs_box: boolean
   items: OrderItem[]
   total_amount: number
 }
@@ -66,7 +67,7 @@ serve(async (req) => {
     })
   }
 
-  const { full_name, email, phone, address_line1, address_line2, town, county, postcode, paypal_email, items, total_amount } = body
+  const { full_name, email, phone, address_line1, address_line2, town, county, postcode, paypal_email, needs_box, items, total_amount } = body
 
   if (!full_name || !email || !phone || !address_line1 || !town || !postcode || !paypal_email || !items?.length || !total_amount) {
     return new Response(JSON.stringify({ error: 'Missing required order fields' }), {
@@ -90,6 +91,7 @@ serve(async (req) => {
       postcode,
       collection_address,
       paypal_email,
+      needs_box,
       items,
       total_amount,
       status: 'pending',
@@ -119,7 +121,8 @@ serve(async (req) => {
       <tr><td style="padding:8px 0;color:#555">Email</td><td style="padding:8px 0;font-weight:600">${email}</td></tr>
       <tr><td style="padding:8px 0;color:#555">Phone</td><td style="padding:8px 0;font-weight:600">${phone}</td></tr>
       <tr><td style="padding:8px 0;color:#555">Collection address</td><td style="padding:8px 0;font-weight:600">${collection_address}</td></tr>
-      <tr><td style="padding:8px 0;color:#555">PayPal email</td><td style="padding:8px 0;font-weight:600">${paypal_email}</td></tr>
+     <tr><td style="padding:8px 0;color:#555">PayPal email</td><td style="padding:8px 0;font-weight:600">${paypal_email}</td></tr>
+<tr><td style="padding:8px 0;color:#555">Postage box</td><td style="padding:8px 0;font-weight:600">${needs_box ? 'Yes — send a free box' : 'No — customer has own packaging'}</td></tr>
     </table>
     <h2 style="color:#00243D;font-size:16px;margin:0 0 12px 0">Order summary</h2>
     <ul style="padding-left:18px;margin:0 0 24px 0">${itemHtml}</ul>
