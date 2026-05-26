@@ -28,7 +28,7 @@ export default function HomePage() {
     <div className="bg-white">
       {/* Hero */}
       <section className="relative -mt-10 -mx-4 w-[calc(100%+2rem)] sm:-mx-6 sm:w-[calc(100%+3rem)] bg-[#00537E] text-white flex items-center">
-        <div className="mx-auto flex max-w-7xl flex-col-reverse gap-8 px-4 py-[18px] sm:flex-row sm:items-center sm:py-[50px]">
+        <div className="mx-auto flex max-w-7xl flex-col-reverse gap-8 px-4 py-[12px] sm:flex-row sm:items-center sm:py-[30px]">
           <div className="sm:w-1/2">
             <h1 className="text-4xl font-bold sm:text-5xl">Sell your golf clubs today.</h1>
             <p className="mt-4 text-lg">Instant offer, free postage, fast payment.</p>
