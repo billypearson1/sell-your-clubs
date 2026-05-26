@@ -77,9 +77,10 @@ export default function Navbar() {
             >
               <div className="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l3-8H6.4" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 13l-1.5 6h13L17 13" />
-                </svg>
+  <path strokeLinecap="round" strokeLinejoin="round" d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+  <path strokeLinecap="round" strokeLinejoin="round" d="M3 6h18" />
+  <path strokeLinecap="round" strokeLinejoin="round" d="M16 10a4 4 0 01-8 0" />
+</svg>
                 <span>{items.length}</span>
               </div>
             </button>
