@@ -58,8 +58,8 @@ export default function HomePage() {
 
 {/* Why sell with us */}
       <section className="mx-auto max-w-7xl px-4 pt-20 sm:px-6">
-        <h2 className="text-2xl font-semibold text-[#00243D]">Why sell with us?</h2>
-        <p className="mt-3 text-sm text-[#1A1A1A]/80">No listings, no waiting, no hassle. Just an instant offer and fast payment.</p>
+        <h2 className="text-3xl font-semibold text-[#00243D]">Why sell with us?</h2>
+<p className="mt-3 text-base text-[#1A1A1A]/80">No listings, no waiting, no hassle. Just an instant offer and fast payment.</p>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {[
             {
@@ -91,10 +91,10 @@ export default function HomePage() {
           ))}
         </div>
       </section>
-      
+
       {/* How it works */}
       <section className="mx-auto max-w-7xl px-4 pt-20 sm:px-6">
-        <h2 className="text-2xl font-semibold text-[#00243D]">How it works</h2>
+        <h2 className="text-3xl font-semibold text-[#00243D]">How it works</h2>
         <div className="mt-8 flex flex-col items-center gap-6 sm:flex-row sm:items-stretch">
           <div className="flex w-full items-center gap-4 sm:w-1/3">
             <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-[#00537E] text-white"><ShoppingBag /></div>
@@ -128,7 +128,7 @@ export default function HomePage() {
 
       {/* FAQ */}
       <section className="mx-auto max-w-7xl px-4 pt-20 sm:px-6">
-        <h2 className="text-2xl font-semibold text-[#00243D]">Frequently asked questions</h2>
+        <h2 className="text-3xl font-semibold text-[#00243D]">Frequently asked questions</h2>
         <div className="mt-6 space-y-3">
           {faqs.map((f, i) => (
             <div key={f.q} className="rounded-lg border border-slate-200 bg-white p-4">
