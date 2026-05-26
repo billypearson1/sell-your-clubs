@@ -41,7 +41,7 @@ export default function HomePage() {
             <img
               src={golfbag}
               alt="Golf bag"
-              className="h-[280px] w-[280px] max-w-[90vw] rounded-full border-4 border-white object-cover shadow-[0_20px_45px_rgba(0,0,0,0.12)] sm:h-[450px] sm:w-[450px]"
+              className="h-[220px] w-[220px] max-w-[90vw] rounded-full border-4 border-white object-cover shadow-[0_20px_45px_rgba(0,0,0,0.12)] sm:h-[340px] sm:w-[340px]"
             />
           </div>
         </div>
