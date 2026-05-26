@@ -57,7 +57,7 @@ export default function HomePage() {
       </div>
 
 {/* Why sell with us */}
-      <section className="mx-auto max-w-7xl px-4 pt-20 sm:px-6">
+      <section className="mx-auto max-w-7xl px-4 pt-10 sm:px-6">
         <h2 className="text-3xl font-semibold text-[#00243D]">Why sell with us?</h2>
 <p className="mt-3 text-base text-[#1A1A1A]/80">No listings, no waiting, no hassle. Just an instant offer and fast payment.</p>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
