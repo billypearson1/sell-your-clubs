@@ -87,7 +87,7 @@ export default function HomePage() {
             <div className="flex w-full flex-col gap-3 sm:w-1/3">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">1</div>
               <p className="text-lg font-semibold text-[#00243D]">Search your clubs</p>
-              <p className="text-sm text-[#1A1A1A]/80">Search and add clubs to your basket for an instant offer.</p>
+              <p className="text-base text-[#1A1A1A]/80">Search and add clubs to your basket for an instant offer.</p>
             </div>
 
             <div className="hidden sm:flex items-center px-4">
@@ -97,7 +97,7 @@ export default function HomePage() {
             <div className="flex w-full flex-col gap-3 sm:w-1/3">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">2</div>
               <p className="text-lg font-semibold text-[#00243D]">Send your clubs free</p>
-              <p className="text-sm text-[#1A1A1A]/80">We'll send a free box and postage label straight to your door.</p>
+              <p className="text-base text-[#1A1A1A]/80">We'll send a free box and postage label straight to your door.</p>
             </div>
 
             <div className="hidden sm:flex items-center px-4">
@@ -107,7 +107,7 @@ export default function HomePage() {
             <div className="flex w-full flex-col gap-3 sm:w-1/3">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">3</div>
               <p className="text-lg font-semibold text-[#00243D]">Get paid</p>
-              <p className="text-sm text-[#1A1A1A]/80">PayPal payment sent within 48 hours of receiving your clubs.</p>
+              <p className="text-base text-[#1A1A1A]/80">PayPal payment sent within 48 hours of receiving your clubs.</p>
             </div>
           </div>
         </section>
