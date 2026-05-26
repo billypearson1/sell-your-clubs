@@ -23,11 +23,7 @@ export const conditionLabels: Record<ConditionTier, string> = {
   fair: 'Fair',
 }
 
-export const loftOptions = [
-  '7°', '8°', '9°', '10°', '11°', '12°', '13°', '14°',
-  '15°', '16°', '17°', '18°', '19°', '20°', '21°', '22°',
-  '23°', '24°', '25°', '26°', '27°', '28°', '29°', '30°',
-]
+
 
 export const shaftFlexOptions = ['Regular', 'Stiff', 'X-Stiff', 'Light-Senior', 'Ladies'] as const
 export const dexterityOptions = ['Right', 'Left'] as const
@@ -112,7 +108,7 @@ export function getClubFields(type: ClubType) {
     case 'hybrid':
       return [
         ...baseFields,
-        { name: 'loft', label: 'Loft', options: loftOptions },
+    
         { name: 'shaft_flex', label: 'Shaft flex', options: shaftFlexOptions },
         { name: 'aftermarket_shaft', label: 'Aftermarket shaft', options: ['No', 'Yes (+£50)'] },
         { name: 'headcover', label: 'Headcover included', options: ['Yes', 'No'] },
@@ -127,7 +123,6 @@ export function getClubFields(type: ClubType) {
     case 'wedge':
       return [
         ...baseFields,
-        { name: 'loft', label: 'Loft', options: loftOptions },
         { name: 'shaft_flex', label: 'Shaft flex', options: shaftFlexOptions },
       ]
     case 'putter':
