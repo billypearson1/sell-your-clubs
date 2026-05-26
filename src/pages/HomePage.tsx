@@ -16,7 +16,7 @@ export default function HomePage() {
     },
     {
       q: 'What condition do you accept?',
-      a: 'We accept clubs in New, Excellent, Good and Fair condition. Select the option that best matches your club during the quote process. We provide guidance to help you self-assess.',
+      a: 'We accept clubs in New, Excellent and Fair condition. Select the option that best matches your club during the quote process. We provide guidance to help you self-assess.',
     },
     {
       q: "What if my club isn't listed?",
@@ -36,12 +36,11 @@ export default function HomePage() {
               <Link to="/quote" className="rounded-[8px] bg-[#00243D] px-6 py-4 text-sm font-semibold text-white hover:bg-[#001a30]">Start selling now</Link>
             </div>
           </div>
-
           <div className="sm:w-1/2 flex items-center justify-center">
             <img
               src={golfbag}
               alt="Golf bag"
-             className="h-[270px] w-[270px] max-w-[90vw] rounded-full object-cover shadow-[0_20px_45px_rgba(0,0,0,0.12)] sm:h-[380px] sm:w-[380px]"
+              className="h-[270px] w-[270px] max-w-[90vw] rounded-full object-cover shadow-[0_20px_45px_rgba(0,0,0,0.12)] sm:h-[380px] sm:w-[380px]"
             />
           </div>
         </div>
@@ -49,21 +48,21 @@ export default function HomePage() {
 
       {/* Brand strip */}
       <div className="-mx-4 w-[calc(100%+2rem)] sm:-mx-6 sm:w-[calc(100%+3rem)] bg-[#F4F4F4]">
-  <div className="grid grid-cols-4 sm:grid-cols-8 w-full px-4 py-4 text-sm font-semibold text-[#00243D] sm:px-6">
-          {['Callaway','TaylorMade','Titleist','Ping','Cobra','Cleveland','Mizuno','Srixon'].map((b) => (
+        <div className="grid grid-cols-4 sm:grid-cols-8 w-full px-4 py-4 text-sm font-semibold text-[#00243D] sm:px-6">
+          {['Callaway', 'TaylorMade', 'Titleist', 'Ping', 'Cobra', 'Cleveland', 'Mizuno', 'Srixon'].map((b) => (
             <div key={b} className="opacity-90 text-center">{b}</div>
           ))}
         </div>
       </div>
 
-{/* Why sell with us */}
+      {/* Why sell with us */}
       <section className="mx-auto max-w-7xl px-4 pt-10 sm:px-6">
         <h2 className="text-3xl font-semibold text-[#00243D]">Why sell with us?</h2>
         <p className="mt-3 text-base text-[#1A1A1A]/80">No listings, no waiting, no hassle. Just an instant offer and fast payment.</p>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {[
             { icon: <Zap className="h-7 w-7 text-[#00537E]" />, title: 'Instant offer', desc: 'See exactly what your clubs are worth before you commit. No obligation, no waiting.' },
-            { icon: <Package className="h-7 w-7 text-[#00537E]" />, title: 'Free postage', desc: "We send a free postage label to your door. It costs you nothing to send your clubs." },
+            { icon: <Package className="h-7 w-7 text-[#00537E]" />, title: 'Free postage', desc: 'We send a free postage label to your door. It costs you nothing to send your clubs.' },
             { icon: <Banknote className="h-7 w-7 text-[#00537E]" />, title: 'Fast PayPal payment', desc: 'Payment sent via PayPal within 2 working days of us receiving and verifying your clubs.' },
             { icon: <Trophy className="h-7 w-7 text-[#00537E]" />, title: 'Price match guarantee', desc: "We'll beat any price from another golf buyback site — or pay you £10 more." },
           ].map((item) => (
@@ -89,8 +88,8 @@ export default function HomePage() {
           </div>
 
           <div className="hidden sm:flex items-center px-4">
-  <ArrowRight className="h-6 w-6 text-[#00537E]" strokeWidth={2} />
-</div>
+            <ArrowRight className="h-6 w-6 text-[#00537E]" strokeWidth={2} />
+          </div>
 
           <div className="flex w-full flex-col gap-3 sm:w-1/3">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">2</div>
@@ -99,8 +98,8 @@ export default function HomePage() {
           </div>
 
           <div className="hidden sm:flex items-center px-4">
-  <ArrowRight className="h-6 w-6 text-[#00537E]" strokeWidth={2} />
-</div>
+            <ArrowRight className="h-6 w-6 text-[#00537E]" strokeWidth={2} />
+          </div>
 
           <div className="flex w-full flex-col gap-3 sm:w-1/3">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">3</div>
@@ -110,38 +109,8 @@ export default function HomePage() {
         </div>
       </section>
 
-          <div className="hidden sm:flex items-center px-4">
-  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#EAF7FF]">
-    <span className="text-[#00537E] font-bold text-sm">→</span>
-  </div>
-</div>
-
-          <div className="flex w-full items-center gap-4 sm:w-1/3">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">2</div>
-            <div>
-              <p className="font-semibold">Send your clubs free</p>
-              <p className="text-sm text-[#1A1A1A]/80">We'll send a free box and postage label straight to your door.</p>
-            </div>
-          </div>
-
-          <div className="hidden sm:flex items-center px-4">
-  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#EAF7FF]">
-    <span className="text-[#00537E] font-bold text-sm">→</span>
-  </div>
-</div>
-
-          <div className="flex w-full items-center gap-4 sm:w-1/3">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">3</div>
-            <div>
-              <p className="font-semibold">Get paid</p>
-              <p className="text-sm text-[#1A1A1A]/80">PayPal payment sent within 48 hours of receiving your clubs.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* FAQ */}
-      <section className="mx-auto max-w-7xl px-4 pt-20 sm:px-6">
+      <section className="mx-auto max-w-7xl px-4 pt-20 pb-20 sm:px-6">
         <h2 className="text-3xl font-semibold text-[#00243D]">Frequently asked questions</h2>
         <div className="mt-6 space-y-3">
           {faqs.map((f, i) => (
@@ -157,7 +126,6 @@ export default function HomePage() {
           ))}
         </div>
       </section>
-
     </div>
   )
 }
