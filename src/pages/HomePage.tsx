@@ -56,6 +56,42 @@ export default function HomePage() {
         </div>
       </div>
 
+{/* Why sell with us */}
+      <section className="mx-auto max-w-7xl px-4 pt-20 sm:px-6">
+        <h2 className="text-2xl font-semibold text-[#00243D]">Why sell with us?</h2>
+        <p className="mt-3 text-sm text-[#1A1A1A]/80">No listings, no waiting, no hassle. Just an instant offer and fast payment.</p>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {[
+            {
+              icon: '⚡',
+              title: 'Instant offer',
+              desc: 'See exactly what your clubs are worth before you commit. No obligation, no waiting.',
+            },
+            {
+              icon: '📦',
+              title: 'Free postage',
+              desc: "We send a free postage label to your door. It costs you nothing to send your clubs.",
+            },
+            {
+              icon: '💷',
+              title: 'Fast PayPal payment',
+              desc: 'Payment sent via PayPal within 2 working days of us receiving and verifying your clubs.',
+            },
+            {
+              icon: '🏆',
+              title: 'Price match guarantee',
+              desc: "We'll beat any price from another golf buyback site — or pay you £10 more.",
+            },
+          ].map((item) => (
+            <div key={item.title} className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="text-3xl">{item.icon}</div>
+              <p className="mt-4 font-semibold text-[#00243D]">{item.title}</p>
+              <p className="mt-2 text-sm leading-6 text-[#1A1A1A]/80">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+      
       {/* How it works */}
       <section className="mx-auto max-w-7xl px-4 pt-20 sm:px-6">
         <h2 className="text-2xl font-semibold text-[#00243D]">How it works</h2>
