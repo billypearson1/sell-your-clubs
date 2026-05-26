@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ShoppingBag, Package, CreditCard } from 'lucide-react'
+import { Zap, Package, Banknote, Trophy } from 'lucide-react'
 import golfbag from '../assets/golfbag.jpg'
 import { useState } from 'react'
 
@@ -63,28 +63,28 @@ export default function HomePage() {
         <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {[
             {
-              icon: '⚡',
+              icon: <Zap className="h-7 w-7 text-[#00537E]" />,
               title: 'Instant offer',
               desc: 'See exactly what your clubs are worth before you commit. No obligation, no waiting.',
             },
             {
-              icon: '📦',
+              icon: <Package className="h-7 w-7 text-[#00537E]" />,
               title: 'Free postage',
               desc: "We send a free postage label to your door. It costs you nothing to send your clubs.",
             },
             {
-              icon: '💷',
+              icon: <Banknote className="h-7 w-7 text-[#00537E]" />,
               title: 'Fast PayPal payment',
               desc: 'Payment sent via PayPal within 2 working days of us receiving and verifying your clubs.',
             },
             {
-              icon: '🏆',
+              icon: <Trophy className="h-7 w-7 text-[#00537E]" />,
               title: 'Price match guarantee',
               desc: "We'll beat any price from another golf buyback site — or pay you £10 more.",
             },
           ].map((item) => (
             <div key={item.title} className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
-              <div className="text-3xl">{item.icon}</div>
+              <div>{item.icon}</div>
               <p className="mt-4 font-semibold text-[#00243D]">{item.title}</p>
               <p className="mt-2 text-sm leading-6 text-[#1A1A1A]/80">{item.desc}</p>
             </div>
@@ -97,7 +97,7 @@ export default function HomePage() {
         <h2 className="text-3xl font-semibold text-[#00243D]">How it works</h2>
         <div className="mt-8 flex flex-col items-center gap-6 sm:flex-row sm:items-stretch">
           <div className="flex w-full items-center gap-4 sm:w-1/3">
-            <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-[#00537E] text-white"><ShoppingBag /></div>
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">1</div>
             <div>
               <p className="font-semibold">Search your clubs</p>
               <p className="text-sm text-[#1A1A1A]/80">Search and add clubs to your basket for an instant offer.</p>
@@ -107,7 +107,7 @@ export default function HomePage() {
           <div className="hidden sm:flex items-center px-4 text-[#00537E]">→</div>
 
           <div className="flex w-full items-center gap-4 sm:w-1/3">
-            <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-[#00537E] text-white"><Package /></div>
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">2</div>
             <div>
               <p className="font-semibold">Send your clubs free</p>
               <p className="text-sm text-[#1A1A1A]/80">We'll send a free box and postage label straight to your door.</p>
@@ -117,7 +117,7 @@ export default function HomePage() {
           <div className="hidden sm:flex items-center px-4 text-[#00537E]">→</div>
 
           <div className="flex w-full items-center gap-4 sm:w-1/3">
-            <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-[#00537E] text-white"><CreditCard /></div>
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">3</div>
             <div>
               <p className="font-semibold">Get paid</p>
               <p className="text-sm text-[#1A1A1A]/80">PayPal payment sent within 48 hours of receiving your clubs.</p>
