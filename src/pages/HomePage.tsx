@@ -58,7 +58,8 @@ export default function HomePage() {
       {/* Why sell with us */}
       <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6">
         <h2 className="text-3xl font-semibold text-[#00243D]">Why sell with us?</h2>
-        <p className="mt-3 mb-2 text-lg text-[#1A1A1A]/80">No listings, no waiting, no hassle. Just an instant offer and fast payment.</p>
+<p className="mt-3 text-lg text-[#1A1A1A]/80">No listings, no waiting, no hassle. Just an instant offer and fast payment.</p>
+<div className="mt-3" />
         <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {[
             { icon: <Zap className="h-6 w-6 text-[#00537E]" />, title: 'Instant offer', desc: 'See exactly what your clubs are worth before you commit. No obligation, no waiting.' },
