@@ -58,7 +58,7 @@ export default function HomePage() {
       {/* Why sell with us */}
       <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6">
         <h2 className="text-3xl font-semibold text-[#00243D]">Why sell with us?</h2>
-        <p className="mt-3 text-lg text-[#1A1A1A]/80">No listings, no waiting, no hassle. Just an instant offer and fast payment.</p>
+        <p className="mt-3 mb-2 text-lg text-[#1A1A1A]/80">No listings, no waiting, no hassle. Just an instant offer and fast payment.</p>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {[
             { icon: <Zap className="h-6 w-6 text-[#00537E]" />, title: 'Instant offer', desc: 'See exactly what your clubs are worth before you commit. No obligation, no waiting.' },
@@ -73,7 +73,7 @@ export default function HomePage() {
                 </div>
                 <p className="text-lg font-semibold text-[#00243D]">{item.title}</p>
               </div>
-              <p className="mt-3 text-sm leading-6 text-[#1A1A1A]/80">{item.desc}</p>
+              <p className="mt-3 text-base leading-7 text-[#1A1A1A]/80">{item.desc}</p>
             </div>
           ))}
         </div>
@@ -86,7 +86,7 @@ export default function HomePage() {
           <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-stretch">
             <div className="flex w-full flex-col gap-3 sm:w-1/3">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">1</div>
-              <p className="text-base font-semibold text-[#00243D]">Search your clubs</p>
+              <p className="text-lg font-semibold text-[#00243D]">Search your clubs</p>
               <p className="text-sm text-[#1A1A1A]/80">Search and add clubs to your basket for an instant offer.</p>
             </div>
 
@@ -96,7 +96,7 @@ export default function HomePage() {
 
             <div className="flex w-full flex-col gap-3 sm:w-1/3">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">2</div>
-              <p className="text-base font-semibold text-[#00243D]">Send your clubs free</p>
+              <p className="text-lg font-semibold text-[#00243D]">Send your clubs free</p>
               <p className="text-sm text-[#1A1A1A]/80">We'll send a free box and postage label straight to your door.</p>
             </div>
 
@@ -106,7 +106,7 @@ export default function HomePage() {
 
             <div className="flex w-full flex-col gap-3 sm:w-1/3">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">3</div>
-              <p className="text-base font-semibold text-[#00243D]">Get paid</p>
+              <p className="text-lg font-semibold text-[#00243D]">Get paid</p>
               <p className="text-sm text-[#1A1A1A]/80">PayPal payment sent within 48 hours of receiving your clubs.</p>
             </div>
           </div>
