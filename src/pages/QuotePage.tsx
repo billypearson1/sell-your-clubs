@@ -8,6 +8,7 @@ import {
   availableConditions,
   clubTypeLabels,
   conditionLabels,
+  conditionDescriptions,
   getClubFields,
   getConditionPrice,
   createClubSearch,
@@ -286,8 +287,8 @@ export default function QuotePage() {
                   >
                     <option value="">Select the condition that fits your club</option>
                     {availableConditionsList.map((condition) => (
-                      <option key={condition} value={condition}>{conditionLabels[condition]}</option>
-                    ))}
+  <option key={condition} value={condition}>{conditionLabels[condition]} — {conditionDescriptions[condition]}</option>
+))}
                   </select>
                 </label>
               </div>
