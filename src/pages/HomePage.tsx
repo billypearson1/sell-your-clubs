@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Zap, Package, Banknote, Trophy } from 'lucide-react'
+import { Zap, Package, Banknote, Trophy, ArrowRight } from 'lucide-react'
 import golfbag from '../assets/golfbag.jpg'
 import { useState } from 'react'
 
@@ -89,10 +89,8 @@ export default function HomePage() {
           </div>
 
           <div className="hidden sm:flex items-center px-4">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#EAF7FF]">
-              <span className="text-[#00537E] font-bold text-sm">→</span>
-            </div>
-          </div>
+  <ArrowRight className="h-6 w-6 text-[#00537E]" strokeWidth={2} />
+</div>
 
           <div className="flex w-full flex-col gap-3 sm:w-1/3">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">2</div>
@@ -101,10 +99,8 @@ export default function HomePage() {
           </div>
 
           <div className="hidden sm:flex items-center px-4">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#EAF7FF]">
-              <span className="text-[#00537E] font-bold text-sm">→</span>
-            </div>
-          </div>
+  <ArrowRight className="h-6 w-6 text-[#00537E]" strokeWidth={2} />
+</div>
 
           <div className="flex w-full flex-col gap-3 sm:w-1/3">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">3</div>
