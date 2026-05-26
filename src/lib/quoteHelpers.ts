@@ -57,6 +57,10 @@ export const AFTERMARKET_BONUS = 50
 
 // Spec-based price adjustments
 export const SPEC_ADJUSTMENTS: Partial<Record<keyof QuoteSpec, Record<string, number>>> = {
+  dexterity: {
+    'Right': 0,
+    'Left': -21,
+  },
   shaft_flex: {
     'Regular': 0,
     'Stiff': 0,
