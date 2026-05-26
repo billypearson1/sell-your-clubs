@@ -28,7 +28,7 @@ export default function HomePage() {
     <div className="bg-white">
       {/* Hero */}
       <section className="relative -mt-10 -mx-4 w-[calc(100%+2rem)] sm:-mx-6 sm:w-[calc(100%+3rem)] bg-[#00537E] text-white flex items-center">
-        <div className="mx-auto flex max-w-7xl flex-col-reverse gap-8 px-4 py-[12px] sm:flex-row sm:items-center sm:py-[30px]">
+        <div className="mx-auto flex max-w-7xl flex-col-reverse gap-8 px-4 py-[22px] sm:flex-row sm:items-center sm:py-[50px]">
           <div className="sm:w-1/2">
             <h1 className="text-4xl font-bold sm:text-5xl">Sell your golf clubs today.</h1>
             <p className="mt-4 text-lg">Instant offer, free postage, fast payment.</p>
@@ -56,20 +56,22 @@ export default function HomePage() {
       </div>
 
       {/* Why sell with us */}
-      <section className="mx-auto max-w-7xl px-4 pt-10 sm:px-6">
+      <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6">
         <h2 className="text-3xl font-semibold text-[#00243D]">Why sell with us?</h2>
-        <p className="mt-3 text-base text-[#1A1A1A]/80">No listings, no waiting, no hassle. Just an instant offer and fast payment.</p>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <p className="mt-3 text-lg text-[#1A1A1A]/80">No listings, no waiting, no hassle. Just an instant offer and fast payment.</p>
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {[
-            { icon: <Zap className="h-7 w-7 text-[#00537E]" />, title: 'Instant offer', desc: 'See exactly what your clubs are worth before you commit. No obligation, no waiting.' },
-            { icon: <Package className="h-7 w-7 text-[#00537E]" />, title: 'Free postage', desc: 'We send a free postage label to your door. It costs you nothing to send your clubs.' },
-            { icon: <Banknote className="h-7 w-7 text-[#00537E]" />, title: 'Fast PayPal payment', desc: 'Payment sent via PayPal within 2 working days of us receiving and verifying your clubs.' },
-            { icon: <Trophy className="h-7 w-7 text-[#00537E]" />, title: 'Price match guarantee', desc: "We'll beat any price from another golf buyback site — or pay you £10 more." },
+            { icon: <Zap className="h-6 w-6 text-[#00537E]" />, title: 'Instant offer', desc: 'See exactly what your clubs are worth before you commit. No obligation, no waiting.' },
+            { icon: <Package className="h-6 w-6 text-[#00537E]" />, title: 'Free postage', desc: 'We send a free postage label to your door. It costs you nothing to send your clubs.' },
+            { icon: <Banknote className="h-6 w-6 text-[#00537E]" />, title: 'Fast PayPal payment', desc: 'Payment sent via PayPal within 2 working days of us receiving and verifying your clubs.' },
+            { icon: <Trophy className="h-6 w-6 text-[#00537E]" />, title: 'Price match guarantee', desc: "We'll beat any price from another golf buyback site — or pay you £10 more." },
           ].map((item) => (
-            <div key={item.title} className="rounded-[28px] bg-[#F4F4F4] p-6">
-              <div className="flex items-center gap-3">
-                {item.icon}
-                <p className="text-base font-semibold text-[#00243D]">{item.title}</p>
+            <div key={item.title} className="p-2">
+              <div className="flex items-center gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[12px] bg-[#EAF7FF]">
+                  {item.icon}
+                </div>
+                <p className="text-lg font-semibold text-[#00243D]">{item.title}</p>
               </div>
               <p className="mt-3 text-sm leading-6 text-[#1A1A1A]/80">{item.desc}</p>
             </div>
@@ -78,36 +80,38 @@ export default function HomePage() {
       </section>
 
       {/* How it works */}
-      <section className="mx-auto max-w-7xl px-4 pt-20 sm:px-6">
-        <h2 className="text-3xl font-semibold text-[#00243D]">How it works</h2>
-        <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-stretch">
-          <div className="flex w-full flex-col gap-3 sm:w-1/3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">1</div>
-            <p className="text-base font-semibold text-[#00243D]">Search your clubs</p>
-            <p className="text-sm text-[#1A1A1A]/80">Search and add clubs to your basket for an instant offer.</p>
-          </div>
+      <div className="-mx-4 w-[calc(100%+2rem)] sm:-mx-6 sm:w-[calc(100%+3rem)] bg-[#EAF7FF] mt-16">
+        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
+          <h2 className="text-3xl font-semibold text-[#00243D]">How it works</h2>
+          <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-stretch">
+            <div className="flex w-full flex-col gap-3 sm:w-1/3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">1</div>
+              <p className="text-base font-semibold text-[#00243D]">Search your clubs</p>
+              <p className="text-sm text-[#1A1A1A]/80">Search and add clubs to your basket for an instant offer.</p>
+            </div>
 
-          <div className="hidden sm:flex items-center px-4">
-            <ArrowRight className="h-6 w-6 text-[#00537E]" strokeWidth={2} />
-          </div>
+            <div className="hidden sm:flex items-center px-4">
+              <ArrowRight className="h-6 w-6 text-[#00537E]" strokeWidth={2} />
+            </div>
 
-          <div className="flex w-full flex-col gap-3 sm:w-1/3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">2</div>
-            <p className="text-base font-semibold text-[#00243D]">Send your clubs free</p>
-            <p className="text-sm text-[#1A1A1A]/80">We'll send a free box and postage label straight to your door.</p>
-          </div>
+            <div className="flex w-full flex-col gap-3 sm:w-1/3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">2</div>
+              <p className="text-base font-semibold text-[#00243D]">Send your clubs free</p>
+              <p className="text-sm text-[#1A1A1A]/80">We'll send a free box and postage label straight to your door.</p>
+            </div>
 
-          <div className="hidden sm:flex items-center px-4">
-            <ArrowRight className="h-6 w-6 text-[#00537E]" strokeWidth={2} />
-          </div>
+            <div className="hidden sm:flex items-center px-4">
+              <ArrowRight className="h-6 w-6 text-[#00537E]" strokeWidth={2} />
+            </div>
 
-          <div className="flex w-full flex-col gap-3 sm:w-1/3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">3</div>
-            <p className="text-base font-semibold text-[#00243D]">Get paid</p>
-            <p className="text-sm text-[#1A1A1A]/80">PayPal payment sent within 48 hours of receiving your clubs.</p>
+            <div className="flex w-full flex-col gap-3 sm:w-1/3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">3</div>
+              <p className="text-base font-semibold text-[#00243D]">Get paid</p>
+              <p className="text-sm text-[#1A1A1A]/80">PayPal payment sent within 48 hours of receiving your clubs.</p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* FAQ */}
       <section className="mx-auto max-w-7xl px-4 pt-20 pb-20 sm:px-6">
