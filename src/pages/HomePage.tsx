@@ -104,7 +104,11 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="hidden sm:flex items-center px-4 text-[#00537E]">→</div>
+          <div className="hidden sm:flex items-center px-4">
+  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#EAF7FF]">
+    <span className="text-[#00537E] font-bold text-sm">→</span>
+  </div>
+</div>
 
           <div className="flex w-full items-center gap-4 sm:w-1/3">
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">2</div>
@@ -114,7 +118,11 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="hidden sm:flex items-center px-4 text-[#00537E]">→</div>
+          <div className="hidden sm:flex items-center px-4">
+  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#EAF7FF]">
+    <span className="text-[#00537E] font-bold text-sm">→</span>
+  </div>
+</div>
 
           <div className="flex w-full items-center gap-4 sm:w-1/3">
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">3</div>
