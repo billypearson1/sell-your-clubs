@@ -63,7 +63,7 @@ export default function HomePage() {
         <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {[
             { icon: <Zap className="h-6 w-6 text-[#00537E]" />, title: 'Instant offer', desc: 'See exactly what your clubs are worth before you commit. No obligation, no waiting.' },
-            { icon: <Package className="h-6 w-6 text-[#00537E]" />, title: 'Free postage', desc: 'We send a free postage label to your door. It costs you nothing to send your clubs.' },
+            { icon: <Package className="h-6 w-6 text-[#00537E]" />, title: 'Free postage', desc: 'We provide a free postage label and box. It costs you nothing to send your clubs.' },
             { icon: <Banknote className="h-6 w-6 text-[#00537E]" />, title: 'Fast PayPal payment', desc: 'Payment sent via PayPal within 2 working days of us receiving and verifying your clubs.' },
             { icon: <Trophy className="h-6 w-6 text-[#00537E]" />, title: 'Price match guarantee', desc: "We'll beat any price from another golf buyback site — or pay you £10 more." },
           ].map((item) => (
@@ -98,7 +98,7 @@ export default function HomePage() {
             <div className="flex w-full flex-col gap-3 sm:w-1/3">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00537E] text-white text-xl font-bold">2</div>
               <p className="text-lg font-semibold text-[#00243D]">Send your clubs free</p>
-              <p className="text-base text-[#1A1A1A]/80">We'll send a free box and postage label straight to your door.</p>
+              <p className="text-base text-[#1A1A1A]/80">No box? No problem. We'll send a free box straight to your door.</p>
             </div>
 
             <div className="hidden sm:flex items-center px-4">
