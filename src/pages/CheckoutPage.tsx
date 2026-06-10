@@ -52,12 +52,10 @@ export default function CheckoutPage() {
       if (!edgeUrl) throw new Error('Edge function URL is not configured')
 
       const response = await fetch(`${edgeUrl}/send-order-email`, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(payload),
-})
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
 
       if (!response.ok) {
         const error = await response.text()
@@ -76,24 +74,16 @@ export default function CheckoutPage() {
   }
 
   if (!items.length || total < 80) {
-  return (
-    <div className="rounded-[28px] border border-slate-200 bg-white p-8 text-center shadow-sm">
-      <p className="text-lg font-semibold text-[#00243D]">{!items.length ? 'Your basket is empty' : 'Minimum order not met'}</p>
-      <p className="mt-3 text-sm text-[#1A1A1A]/80">{!items.length ? 'Go back and add some clubs to your quote first.' : `Your basket total is £${total.toFixed(2)}. A minimum order of £80 is required.`}</p>
-      <button
-        type="button"
-        onClick={() => navigate('/quote')}
-        className="mt-6 inline-flex items-center justify-center rounded-[8px] bg-[#00537E] px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#003f5d]"
-      >
-        Back to quote tool
-      </button>
-    </div>
-  )
-}
     return (
       <div className="rounded-[28px] border border-slate-200 bg-white p-8 text-center shadow-sm">
-        <p className="text-lg font-semibold text-[#00243D]">Your basket is empty</p>
-        <p className="mt-3 text-sm text-[#1A1A1A]/80">Go back and add some clubs to your quote first.</p>
+        <p className="text-lg font-semibold text-[#00243D]">
+          {!items.length ? 'Your basket is empty' : 'Minimum order not met'}
+        </p>
+        <p className="mt-3 text-sm text-[#1A1A1A]/80">
+          {!items.length
+            ? 'Go back and add some clubs to your quote first.'
+            : `Your basket total is £${total.toFixed(2)}. A minimum order of £80 is required.`}
+        </p>
         <button
           type="button"
           onClick={() => navigate('/quote')}
