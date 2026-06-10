@@ -74,15 +74,22 @@ export const SPEC_ADJUSTMENTS: Partial<Record<keyof QuoteSpec, Record<string, nu
   },
 }
 
-const CONDITION_MULTIPLIERS: Record<ConditionTier, number> = {
+const CONDITION_MULTIPLIERS_HIGH: Record<ConditionTier, number> = {
   new: 0.74,
   excellent: 0.68,
   fair: 0.60,
 }
 
-export function getConditionPrice(club: Club, condition: ConditionTier, specs?: QuoteSpec, aftermarket?: boolean): number {
-  let price = Math.round(club.price_avg * CONDITION_MULTIPLIERS[condition] * 100) / 100
+const CONDITION_MULTIPLIERS_LOW: Record<ConditionTier, number> = {
+  new: 0.65,
+  excellent: 0.60,
+  fair: 0.55,
+}
 
+export function getConditionPrice(club: Club, condition: ConditionTier, specs?: QuoteSpec, aftermarket?: boolean): number {
+  const multipliers = club.price_avg < 120 ? CONDITION_MULTIPLIERS_LOW : CONDITION_MULTIPLIERS_HIGH
+  let price = Math.round(club.price_avg * multipliers[condition] * 100) / 100
+  
   if (specs) {
     for (const [key, adjustments] of Object.entries(SPEC_ADJUSTMENTS)) {
       const specValue = specs[key as keyof QuoteSpec]
