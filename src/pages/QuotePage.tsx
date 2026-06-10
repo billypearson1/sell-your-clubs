@@ -151,7 +151,10 @@ export default function QuotePage() {
       <section className="grid gap-8 xl:grid-cols-[1.45fr_0.95fr]">
         <div className="space-y-8">
           <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
-            <label className="block text-sm font-semibold text-[#00243D]">Search clubs</label>
+            <div className="flex items-center justify-between">
+  <label className="block text-sm font-semibold text-[#00243D]">Search clubs</label>
+  <span className="text-xs text-slate-500">£80 minimum order</span>
+</div>
             <input
               value={search}
               onChange={(event) => {
@@ -322,7 +325,10 @@ export default function QuotePage() {
             <div className="flex items-center justify-between gap-4">
               <div>
                 <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Your basket</p>
-                <p className="mt-2 text-3xl font-semibold text-[#00243D]">£{total.toFixed(2)}</p>
+<p className="mt-2 text-3xl font-semibold text-[#00243D]">£{total.toFixed(2)}</p>
+{total > 0 && total < 80 && (
+  <p className="mt-2 text-sm text-red-600 font-medium">Minimum order is £80</p>
+)}
               </div>
               <span className="rounded-full bg-[#EAF7FF] px-4 py-2 text-sm font-semibold text-[#00537E]">{quoteItems.length} items</span>
             </div>
@@ -363,13 +369,13 @@ export default function QuotePage() {
             </div>
 
             <button
-              type="button"
-              onClick={() => navigate('/checkout', { state: { items: quoteItems, total } })}
-              className="mt-6 w-full rounded-[8px] bg-[#00537E] px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#003f5d] disabled:cursor-not-allowed disabled:bg-slate-400"
-              disabled={!quoteItems.length}
-            >
-              Accept offer
-            </button>
+  type="button"
+  onClick={() => navigate('/checkout', { state: { items: quoteItems, total } })}
+  className="mt-6 w-full rounded-[8px] bg-[#00537E] px-6 py-4 text-sm font-semibold text-white transition hover:bg-[#003f5d] disabled:cursor-not-allowed disabled:bg-slate-400"
+  disabled={!quoteItems.length || total < 80}
+>
+  Accept offer
+</button>
           </div>
 
           <div className="rounded-[28px] border border-slate-200 bg-[#F4F4F4] p-6 shadow-sm">
