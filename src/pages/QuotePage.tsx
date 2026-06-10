@@ -152,8 +152,8 @@ export default function QuotePage() {
         <div className="space-y-8">
           <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
             <div className="flex items-center justify-between">
-  <label className="block text-sm font-semibold text-[#00243D]">Search clubs</label>
-  <span className="text-xs text-slate-500">£80 minimum order</span>
+  <label className="block text-lg font-semibold text-[#00243D]">Search clubs</label>
+  <span className="text-lg font-semibold text-[#00243D]">£80 minimum order</span>
 </div>
             <input
               value={search}
@@ -324,7 +324,7 @@ export default function QuotePage() {
           <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Your basket</p>
+                <p className="text-lg text-[#00243D]">Your basket</p>
 <p className="mt-2 text-3xl font-semibold text-[#00243D]">£{total.toFixed(2)}</p>
 {total > 0 && total < 80 && (
   <p className="mt-2 text-sm text-red-600 font-medium">Minimum order is £80</p>
