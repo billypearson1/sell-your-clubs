@@ -153,7 +153,7 @@ export default function QuotePage() {
           <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
             <div className="flex items-center justify-between">
   <label className="block text-lg font-semibold text-[#00243D]">Search clubs</label>
-  <span className="text-lg font-semibold text-[#00243D]">£80 minimum order</span>
+  <span className="text-lg font-semibold text-slate-500">£80 minimum order</span>
 </div>
             <input
               value={search}
